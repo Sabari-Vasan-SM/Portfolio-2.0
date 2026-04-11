@@ -6,21 +6,21 @@ type Line = { type: "input" | "output" | "error"; text: string };
 
 const commandResponses: Record<string, string> = {
   help: `Available commands:
-  about      — Who is SabariVasan?
-  skills     — Technical expertise
+  about      — Quick intro
+  skills     — Technical stack
   projects   — Featured projects
-  experience — Work history
+  experience — Career journey
   education  — Academic background
-  contact    — Get in touch
-  clear      — Clear terminal
-  social     — Social links`,
+  contact    — Contact details
+  social     — GitHub + LinkedIn
+  clear      — Clear terminal`,
   about: `> SabariVasan
-  Role: Software Developer
-  Focus: Web Development, Cloud, DevOps
-  Location: Tamil Nadu, India
-  Status: Available for hire`,
+  Role: Full Stack Developer
+  Focus: Web Development, Cloud, DevOps, AI Integration
+  Location: Erode, Tamil Nadu, India
+  Status: Open to full-time opportunities`,
   skills: `> Technical Skills:
-  Frontend:  React, Next.js, TypeScript, Flutter
+  Frontend:  React, Next.js, TypeScript, Tailwind CSS
   Backend:   Node.js, Express, FastAPI, Python
   Database:  MongoDB, PostgreSQL, Supabase
   DevOps:    Docker, Jenkins, GitHub Actions
@@ -46,10 +46,10 @@ const commandResponses: Record<string, string> = {
   contact: `> Contact Info:
   Email: sabarivasan1239@gmail.com
   Phone: +91 9677465071
-  Location: Tamil Nadu, India`,
+  Location: Erode, Tamil Nadu, India`,
   social: `> Social Links:
-  GitHub:   github.com/SabariVasan
-  LinkedIn: linkedin.com/in/sabarivasan`,
+  GitHub:   https://github.com/Sabari-Vasan-SM
+  LinkedIn: https://www.linkedin.com/in/sabarivasan-s-m-b10229255/`,
 };
 
 const TerminalSection = () => {
@@ -160,8 +160,8 @@ const TerminalSection = () => {
           <div ref={terminalBodyRef} className="p-4 h-80 overflow-y-auto text-sm">
             {lines.map((line, i) => (
               <div key={i} className={`mb-1 whitespace-pre-wrap ${line.type === "input" ? "text-terminal-cyan" :
-                  line.type === "error" ? "text-terminal-red" :
-                    "text-foreground"
+                line.type === "error" ? "text-terminal-red" :
+                  "text-foreground"
                 }`}>
                 {line.text}
               </div>

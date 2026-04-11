@@ -5,13 +5,14 @@ import { CopilotIcon } from "@primer/octicons-react";
 type Msg = { role: "user" | "bot"; text: string };
 
 const botResponses: Record<string, string> = {
-  hi: "Hey! 👋 I'm Sabari's assistant. Ask me about his skills, projects, or contact info!",
-  hello: "Hello! I can tell you about Sabari's experience, projects, skills, or how to reach him.",
-  skills: "Sabari is skilled in React, Node.js, TypeScript, MongoDB, Docker, AWS, and more. He's a full-stack developer with DevOps knowledge!",
-  projects: "Sabari has built 8+ projects including Bike Buddy, Billventory, an IoT Air Quality Monitor, and a Gear Fault Detection system using YOLOv8.",
-  contact: "You can reach Sabari at sabarivasan1239@gmail.com or call +91 9677465071. He's based in Tamil Nadu, India.",
-  experience: "Sabari is currently a Software Developer at Harvee Designs, Coimbatore. He's also interned at InternPe and Nxt Gen Instruments.",
-  education: "Sabari is pursuing B.Tech in IT at Kongu Engineering College with a 6.81 CGPA.",
+  hi: "Hey! I'm Sabari's assistant. Ask me about skills, projects, experience, education, social links, or contact.",
+  hello: "Hello! I can help you explore Sabari's portfolio. Try: skills, projects, experience, education, social, or contact.",
+  skills: "Sabari works with React, Next.js, TypeScript, Node.js, Express, MongoDB, Docker, AWS, and modern DevOps workflows.",
+  projects: "Sabari has built 8 featured projects including Bike Buddy, Billventory, Air Quality Monitor (IoT), Password Saver, and a YOLOv8 gear fault detection system.",
+  contact: "Reach Sabari at sabarivasan1239@gmail.com or +91 9677465071. Location: Erode, Tamil Nadu, India.",
+  social: "GitHub: https://github.com/Sabari-Vasan-SM | LinkedIn: https://www.linkedin.com/in/sabarivasan-s-m-b10229255/",
+  experience: "Sabari is currently a Software Developer at Harvee Designs and previously interned at InternPe and Nxt Gen Instruments.",
+  education: "Sabari is pursuing B.Tech in Information Technology at Kongu Engineering College.",
 };
 
 const getResponse = (msg: string): string => {
@@ -19,13 +20,13 @@ const getResponse = (msg: string): string => {
   for (const [key, val] of Object.entries(botResponses)) {
     if (lower.includes(key)) return val;
   }
-  return "Hmm, I'm not sure about that. Try asking about skills, projects, contact, experience, or education!";
+  return "I can help with: skills, projects, experience, education, social, or contact.";
 };
 
 const ChatBot = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
-    { role: "bot", text: "Hi! 👋 I'm Sabari's portfolio assistant. How can I help?" },
+    { role: "bot", text: "Hi! I'm Sabari's portfolio assistant. Ask me about skills, projects, social links, or contact." },
   ]);
   const [input, setInput] = useState("");
 

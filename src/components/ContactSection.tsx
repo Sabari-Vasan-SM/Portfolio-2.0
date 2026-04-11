@@ -2,23 +2,54 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Github, Linkedin, Mail } from "lucide-react";
 import ScrollFloat from "@/components/ScrollFloat";
+import { toast } from "@/components/ui/sonner";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [focused, setFocused] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const gmailComposeBase = "https://mail.google.com/mail/?view=cm&fs=1&to=sabarivasan1239@gmail.com";
+  const formspreeEndpoint = "https://formspree.io/f/xjkrokoj";
 
   const socialLinks = [
-    { label: "GitHub", href: "https://github.com/SabariVasan", icon: Github },
-    { label: "LinkedIn", href: "https://linkedin.com/in/sabarivasan", icon: Linkedin },
-    { label: "Email", href: "mailto:sabarivasan1239@gmail.com", icon: Mail },
+    { label: "GitHub", href: "https://github.com/Sabari-Vasan-SM", icon: Github },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/sabarivasan-s-m-b10229255/", icon: Linkedin },
+    { label: "Email", href: gmailComposeBase, icon: Mail },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const mailtoLink = `mailto:sabarivasan1239@gmail.com?subject=Portfolio Contact from ${formData.name}&body=${encodeURIComponent(formData.message)}%0A%0AFrom: ${formData.email}`;
-    window.open(mailtoLink);
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(formspreeEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      toast.success("Hola, your message has been sent to Sabarivasan. Kindly wait for his response.");
+      setFormData({ name: "", email: "", message: "" });
+    } catch {
+      toast.error("Message could not be sent. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -52,9 +83,9 @@ const ContactSection = () => {
             </p>
 
             {[
-              { label: "Email", value: "sabarivasan1239@gmail.com", href: "mailto:sabarivasan1239@gmail.com" },
+              { label: "Email", value: "sabarivasan1239@gmail.com", href: gmailComposeBase, newTab: true },
               { label: "Phone", value: "+91 9677465071", href: "tel:+919677465071" },
-              { label: "Location", value: "Tamil Nadu, India", href: undefined },
+              { label: "Location", value: "Erode, Tamil Nadu, India", href: undefined },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -67,7 +98,12 @@ const ContactSection = () => {
                   {item.label}
                 </span>
                 {item.href ? (
-                  <a href={item.href} className="text-sm text-terminal-green hover:text-glow transition-all cursor-none">
+                  <a
+                    href={item.href}
+                    target={item.newTab ? "_blank" : undefined}
+                    rel={item.newTab ? "noopener noreferrer" : undefined}
+                    className="text-sm text-terminal-green hover:text-glow transition-all cursor-none"
+                  >
                     {item.value}
                   </a>
                 ) : (
@@ -157,9 +193,10 @@ const ContactSection = () => {
               type="submit"
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
+              disabled={isSubmitting}
               className="w-full py-3 bg-terminal-green/10 text-terminal-green terminal-border text-sm tracking-widest uppercase hover:bg-terminal-green/20 transition-colors cursor-none"
             >
-              <span className="text-terminal-dim">[</span> Execute Send <span className="text-terminal-dim">]</span>
+              <span className="text-terminal-dim">[</span> {isSubmitting ? "Sending..." : "Execute Send"} <span className="text-terminal-dim">]</span>
             </motion.button>
           </motion.form>
         </div>
