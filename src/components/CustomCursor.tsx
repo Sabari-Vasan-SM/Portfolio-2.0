@@ -36,7 +36,7 @@ const CustomCursor = () => {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border border-terminal-green"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border border-white/70"
         animate={{
           x: pos.x - 16,
           y: pos.y - 16,
@@ -46,14 +46,14 @@ const CustomCursor = () => {
         style={{ width: 32, height: 32 }}
       />
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full bg-terminal-green"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full bg-white/90"
         animate={{
           x: pos.x - 3,
           y: pos.y - 3,
           scale: clicking ? 1.5 : 1,
         }}
         transition={{ type: "spring", damping: 30, stiffness: 500 }}
-        style={{ width: 6, height: 6, boxShadow: "0 0 10px hsl(120 100% 50% / 0.8)" }}
+        style={{ width: 6, height: 6 }}
       />
     </>
   );

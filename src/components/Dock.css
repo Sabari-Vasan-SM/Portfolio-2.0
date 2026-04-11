@@ -36,7 +36,7 @@
 .dock-item:hover,
 .dock-item:focus-visible {
     border-color: hsl(0 0% 100% / 0.35);
-    box-shadow: 0 0 18px hsl(0 0% 100% / 0.12);
+    box-shadow: none;
 }
 
 .dock-label {

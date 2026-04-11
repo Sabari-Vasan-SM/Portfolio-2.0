@@ -1,12 +1,14 @@
 import {
+    BookOpen,
     Briefcase,
     FileTerminal,
+    FolderOpen,
     GraduationCap,
     House,
-    Layers,
     Mail,
     Menu,
-    Sparkles,
+    User,
+    Wrench,
     X,
 } from "lucide-react";
 import { useState } from "react";
@@ -22,9 +24,11 @@ const NavBar = () => {
 
     const items: DockItemData[] = [
         { icon: <House size={18} />, label: "Home", onClick: () => scrollTo("hero") },
-        { icon: <Sparkles size={18} />, label: "About", onClick: () => scrollTo("about") },
-        { icon: <Layers size={18} />, label: "Projects", onClick: () => scrollTo("projects") },
+        { icon: <User size={18} />, label: "About", onClick: () => scrollTo("about") },
+        { icon: <Wrench size={18} />, label: "Skills", onClick: () => scrollTo("skills") },
+        { icon: <FolderOpen size={18} />, label: "Projects", onClick: () => scrollTo("projects") },
         { icon: <Briefcase size={18} />, label: "Experience", onClick: () => scrollTo("experience") },
+        { icon: <BookOpen size={18} />, label: "Education", onClick: () => scrollTo("education") },
         { icon: <GraduationCap size={18} />, label: "Credentials", onClick: () => scrollTo("certifications") },
         { icon: <FileTerminal size={18} />, label: "Terminal", onClick: () => scrollTo("terminal") },
         { icon: <Mail size={18} />, label: "Contact", onClick: () => scrollTo("contact") },
@@ -33,8 +37,10 @@ const NavBar = () => {
     const mobileLinks = [
         { label: "Home", id: "hero" },
         { label: "About", id: "about" },
+        { label: "Skills", id: "skills" },
         { label: "Projects", id: "projects" },
         { label: "Experience", id: "experience" },
+        { label: "Education", id: "education" },
         { label: "Credentials", id: "certifications" },
         { label: "Terminal", id: "terminal" },
         { label: "Contact", id: "contact" },

@@ -71,7 +71,7 @@ const ExperienceSection = () => {
         </div>
 
         {/* Education */}
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }}>
+        <motion.div id="education" initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }}>
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>education
           </p>
@@ -104,8 +104,8 @@ const ExperienceSection = () => {
                 >
                   <div
                     className={`w-full md:max-w-sm ${leftAligned
-                        ? "md:col-start-1 md:justify-self-end"
-                        : "md:col-start-3 md:justify-self-start"
+                      ? "md:col-start-1 md:justify-self-end"
+                      : "md:col-start-3 md:justify-self-start"
                       }`}
                   >
                     <div className="terminal-border rounded-xl bg-card p-5 shadow-[0_0_20px_hsl(0_0%_100%_/_0.03)] transition-all hover:border-terminal-green/30">
@@ -129,8 +129,8 @@ const ExperienceSection = () => {
 
                   <div
                     className={`hidden md:block ${leftAligned
-                        ? "md:col-start-3 md:justify-self-start"
-                        : "md:col-start-1 md:justify-self-end"
+                      ? "md:col-start-3 md:justify-self-start"
+                      : "md:col-start-1 md:justify-self-end"
                       }`}
                   >
                     <span className="inline-flex items-center rounded-full border border-terminal-green/35 bg-secondary/40 px-3 py-1 text-xs text-muted-foreground">
