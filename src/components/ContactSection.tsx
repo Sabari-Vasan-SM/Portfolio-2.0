@@ -1,0 +1,127 @@
+import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+
+const ContactSection = () => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [focused, setFocused] = useState<string | null>(null);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const mailtoLink = `mailto:sabarivasan1239@gmail.com?subject=Portfolio Contact from ${formData.name}&body=${encodeURIComponent(formData.message)}%0A%0AFrom: ${formData.email}`;
+    window.open(mailtoLink);
+  };
+
+  return (
+    <section id="contact" className="py-24 px-6" ref={ref}>
+      <div className="max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
+          <p className="text-terminal-dim text-xs tracking-widest mb-2">
+            <span className="text-terminal-green">~/</span>contact
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-foreground">
+            Get In Touch
+          </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            className="space-y-4"
+          >
+            <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+              Have a project in mind? Let's discuss how I can help bring your ideas to life.
+            </p>
+
+            {[
+              { label: "Email", value: "sabarivasan1239@gmail.com", href: "mailto:sabarivasan1239@gmail.com" },
+              { label: "Phone", value: "+91 9677465071", href: "tel:+919677465071" },
+              { label: "Location", value: "Tamil Nadu, India", href: undefined },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.2 + i * 0.1 }}
+                className="p-4 terminal-border bg-card group hover:border-terminal-green/30 transition-all"
+              >
+                <span className="text-[10px] text-terminal-dim tracking-widest uppercase block mb-1">
+                  {item.label}
+                </span>
+                {item.href ? (
+                  <a href={item.href} className="text-sm text-terminal-green hover:text-glow transition-all cursor-none">
+                    {item.value}
+                  </a>
+                ) : (
+                  <span className="text-sm text-foreground">{item.value}</span>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Terminal-style form */}
+          <motion.form
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, x: 20 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            className="p-6 terminal-border bg-card"
+          >
+            <div className="flex items-center gap-2 mb-6 pb-3 border-b border-border">
+              <div className="w-2.5 h-2.5 rounded-full bg-terminal-red/60" />
+              <div className="w-2.5 h-2.5 rounded-full bg-terminal-amber/60" />
+              <div className="w-2.5 h-2.5 rounded-full bg-terminal-green/60" />
+              <span className="text-[10px] text-muted-foreground ml-2">send_message.sh</span>
+            </div>
+
+            {["name", "email", "message"].map((field) => (
+              <div key={field} className="mb-4">
+                <label className="text-[10px] text-terminal-dim tracking-widest uppercase block mb-2">
+                  <span className="text-terminal-green">$</span> {field}
+                </label>
+                {field === "message" ? (
+                  <textarea
+                    rows={4}
+                    value={formData[field as keyof typeof formData]}
+                    onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
+                    onFocus={() => setFocused(field)}
+                    onBlur={() => setFocused(null)}
+                    className={`w-full bg-background p-3 text-sm text-foreground outline-none transition-all cursor-none resize-none ${
+                      focused === field ? "terminal-border border-terminal-green/40" : "terminal-border"
+                    }`}
+                    required
+                  />
+                ) : (
+                  <input
+                    type={field === "email" ? "email" : "text"}
+                    value={formData[field as keyof typeof formData]}
+                    onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
+                    onFocus={() => setFocused(field)}
+                    onBlur={() => setFocused(null)}
+                    className={`w-full bg-background p-3 text-sm text-foreground outline-none transition-all cursor-none ${
+                      focused === field ? "terminal-border border-terminal-green/40" : "terminal-border"
+                    }`}
+                    required
+                  />
+                )}
+              </div>
+            ))}
+
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              className="w-full py-3 bg-terminal-green/10 text-terminal-green terminal-border text-sm tracking-widest uppercase hover:bg-terminal-green/20 transition-colors cursor-none"
+            >
+              <span className="text-terminal-dim">[</span> Execute Send <span className="text-terminal-dim">]</span>
+            </motion.button>
+          </motion.form>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ContactSection;
