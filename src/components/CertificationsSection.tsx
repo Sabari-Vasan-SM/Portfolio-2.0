@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
+import Masonry from "@/components/Masonry";
 
 const certifications = [
   { title: "MongoDB Associate Developer", org: "MongoDB", year: "2025" },
@@ -24,6 +25,43 @@ const CertificationsSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
+  const certificationItems = useMemo(
+    () =>
+      certifications.map((cert, i) => {
+        const createCertImage = () => {
+          const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 900'>
+            <defs>
+              <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+                <stop offset='0%' stop-color='hsl(0 0% 3%)'/>
+                <stop offset='100%' stop-color='hsl(0 0% 8%)'/>
+              </linearGradient>
+            </defs>
+            <rect width='100%' height='100%' fill='url(#g)'/>
+            <rect x='28' y='28' width='544' height='844' rx='8' fill='none' stroke='hsl(0 0% 100% / 0.18)' stroke-width='2'/>
+            <text x='64' y='130' fill='hsl(0 0% 72%)' font-size='16' font-family='monospace' letter-spacing='3'>CERTIFICATION</text>
+            <line x1='64' y1='150' x2='536' y2='150' stroke='hsl(0 0% 100% / 0.22)' />
+            <text x='64' y='240' fill='hsl(0 0% 95%)' font-size='40' font-family='monospace' font-weight='700'>${cert.year}</text>
+            <text x='64' y='330' fill='hsl(0 0% 92%)' font-size='28' font-family='monospace'>${cert.title}</text>
+            <text x='64' y='390' fill='hsl(0 0% 70%)' font-size='20' font-family='monospace'>${cert.org}</text>
+            <circle cx='520' cy='100' r='12' fill='hsl(0 0% 100%)'/>
+          </svg>`;
+
+          return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+        };
+
+        return {
+          id: `cert-${i + 1}`,
+          img: createCertImage(),
+          url: "",
+          height: 220 + (i % 3) * 60,
+          title: cert.title,
+          subtitle: cert.org,
+          year: cert.year,
+        };
+      }),
+    [],
+  );
+
   return (
     <section id="certifications" className="py-24 px-6" ref={ref}>
       <div className="max-w-5xl mx-auto">
@@ -36,22 +74,24 @@ const CertificationsSection = () => {
           </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 mb-20">
-          {certifications.map((cert, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: i * 0.07 }}
-              whileHover={{ y: -3, borderColor: "hsl(120 100% 50% / 0.4)" }}
-              className="p-5 terminal-border bg-card cursor-none"
-            >
-              <span className="text-[10px] text-terminal-dim tracking-widest">{cert.year}</span>
-              <h3 className="text-sm font-semibold text-foreground mt-2 mb-1">{cert.title}</h3>
-              <p className="text-xs text-muted-foreground">{cert.org}</p>
-            </motion.div>
-          ))}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.08 }}
+          className="mb-20"
+        >
+          <Masonry
+            items={certificationItems}
+            ease="power3.out"
+            duration={0.6}
+            stagger={0.05}
+            animateFrom="bottom"
+            scaleOnHover
+            hoverScale={0.97}
+            blurToFocus
+            colorShiftOnHover={false}
+          />
+        </motion.div>
 
         {/* Achievements */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }}>

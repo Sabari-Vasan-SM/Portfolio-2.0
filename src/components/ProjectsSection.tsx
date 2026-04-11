@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 
 const projects = [
   {
@@ -75,61 +76,75 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <ScrollStack
+          className="mx-auto w-full max-w-3xl"
+          itemDistance={36}
+          itemScale={0.025}
+          itemStackDistance={24}
+          stackPosition="16%"
+          scaleEndPosition="8%"
+          baseScale={0.9}
+          scaleDuration={0.3}
+          blurAmount={0.8}
+          useWindowScroll
+        >
           {projects.map((project, i) => (
-            <motion.div
+            <ScrollStackItem
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.08 }}
-              onClick={() => setExpanded(expanded === i ? null : i)}
-              className={`group p-6 terminal-border bg-card cursor-none transition-all duration-300 ${
+              itemClassName={`group p-6 terminal-border bg-card cursor-none transition-all duration-300 ${
                 expanded === i ? "border-terminal-green/40 bg-terminal-green/5" : "hover:border-muted-foreground/30"
               }`}
             >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <span className="text-[10px] text-terminal-dim tracking-widest uppercase block mb-1">
-                    {project.category}
-                  </span>
-                  <h3 className="text-lg font-semibold text-foreground group-hover:text-terminal-green transition-colors">
-                    {project.title}
-                  </h3>
-                </div>
-                <motion.span
-                  animate={{ rotate: expanded === i ? 45 : 0 }}
-                  className="text-terminal-green text-xl leading-none mt-1"
-                >
-                  +
-                </motion.span>
-              </div>
-
-              {/* Expandable content */}
               <motion.div
-                initial={false}
-                animate={{ height: expanded === i ? "auto" : 0, opacity: expanded === i ? 1 : 0 }}
-                className="overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: i * 0.08 }}
+                onClick={() => setExpanded(expanded === i ? null : i)}
               >
-                <p className="text-xs text-muted-foreground leading-relaxed mb-4">
-                  {project.desc}
-                </p>
-              </motion.div>
-
-              {/* Tech tags */}
-              <div className="flex flex-wrap gap-1.5 mt-2">
-                {project.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="text-[10px] px-2 py-0.5 bg-secondary text-muted-foreground tracking-wider"
+                {/* Header */}
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <span className="text-[10px] text-terminal-dim tracking-widest uppercase block mb-1">
+                      {project.category}
+                    </span>
+                    <h3 className="text-lg font-semibold text-foreground group-hover:text-terminal-green transition-colors">
+                      {project.title}
+                    </h3>
+                  </div>
+                  <motion.span
+                    animate={{ rotate: expanded === i ? 45 : 0 }}
+                    className="text-terminal-green text-xl leading-none mt-1"
                   >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
+                    +
+                  </motion.span>
+                </div>
+
+                {/* Expandable content */}
+                <motion.div
+                  initial={false}
+                  animate={{ height: expanded === i ? "auto" : 0, opacity: expanded === i ? 1 : 0 }}
+                  className="overflow-hidden"
+                >
+                  <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+                    {project.desc}
+                  </p>
+                </motion.div>
+
+                {/* Tech tags */}
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {project.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="text-[10px] px-2 py-0.5 bg-secondary text-muted-foreground tracking-wider"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            </ScrollStackItem>
           ))}
-        </div>
+        </ScrollStack>
       </div>
     </section>
   );

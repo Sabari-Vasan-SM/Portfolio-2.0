@@ -1,0 +1,23 @@
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.scroll-stack-inner {
+  position: relative;
+  padding-bottom: 10rem;
+}
+
+.scroll-stack-card {
+  position: sticky;
+  top: 12vh;
+  width: 100%;
+  backface-visibility: hidden;
+  transform-origin: top center;
+}
+
+.scroll-stack-end {
+  height: 40vh;
+  width: 100%;
+}

@@ -7,33 +7,68 @@ const interests = [
   { title: "DevOps", desc: "Implementing CI/CD pipelines, automation, and monitoring for seamless workflows." },
 ];
 
-const stats = [
-  { label: "Technologies Used", value: 20 },
-  { label: "Projects Completed", value: 8 },
-  { label: "GitHub Repos", value: 15 },
-  { label: "Contributions", value: 100 },
+type StatItem = {
+  label: string;
+  value: number;
+  suffix?: string;
+  decimals?: number;
+};
+
+const stats: StatItem[] = [
+  { label: "Technologies Used", value: 20, suffix: "+" },
+  { label: "Projects Completed", value: 25, suffix: "+" },
+  { label: "GitHub Repos", value: 85, suffix: "+" },
+  { label: "Contributions", value: 940, suffix: "+" },
+  { label: "Lines of Code Changed", value: 20.6, suffix: "M+", decimals: 1 },
 ];
 
-const AnimatedCounter = ({ target, inView }: { target: number; inView: boolean }) => {
+const AnimatedCounter = ({
+  target,
+  inView,
+  decimals = 0,
+  suffix = "+",
+}: {
+  target: number;
+  inView: boolean;
+  decimals?: number;
+  suffix?: string;
+}) => {
   const [count, setCount] = useState(0);
+
   useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const dur = 1500;
-    const step = Math.ceil(target / (dur / 16));
-    const interval = setInterval(() => {
-      start += step;
-      if (start >= target) { setCount(target); clearInterval(interval); }
-      else setCount(start);
-    }, 16);
-    return () => clearInterval(interval);
-  }, [inView, target]);
-  return <span>{count}+</span>;
+    if (!inView) {
+      setCount(0);
+      return;
+    }
+
+    const duration = 1500;
+    const startTime = performance.now();
+    let frameId = 0;
+
+    const animate = (timestamp: number) => {
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const factor = 10 ** decimals;
+      setCount(Math.floor(progress * target * factor) / factor);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animate);
+      } else {
+        setCount(target);
+      }
+    };
+
+    frameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(frameId);
+  }, [inView, target, decimals]);
+
+  return <span>{count.toFixed(decimals)}{suffix}</span>;
 };
 
 const AboutSection = () => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: false, margin: "-100px" });
   const [activeInterest, setActiveInterest] = useState(0);
 
   return (
@@ -90,7 +125,7 @@ const AboutSection = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {stats.map((s, i) => (
             <motion.div
               key={i}
@@ -100,7 +135,7 @@ const AboutSection = () => {
               className="p-5 terminal-border text-center bg-card"
             >
               <div className="text-3xl font-bold text-terminal-green text-glow mb-1">
-                <AnimatedCounter target={s.value} inView={inView} />
+                <AnimatedCounter target={s.value} inView={inView} decimals={s.decimals} suffix={s.suffix} />
               </div>
               <p className="text-xs text-muted-foreground tracking-wider">{s.label}</p>
             </motion.div>
