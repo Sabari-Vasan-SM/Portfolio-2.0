@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
+import { useMemo, useRef } from "react";
+import CircularGallery from "@/components/CircularGallery";
+import ScrollFloat from "@/components/ScrollFloat";
 
 const projects = [
   {
@@ -56,7 +57,15 @@ const projects = [
 const ProjectsSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [expanded, setExpanded] = useState<number | null>(null);
+
+  const galleryItems = useMemo(
+    () =>
+      projects.map((project, i) => ({
+        image: `https://picsum.photos/seed/${encodeURIComponent(project.title.toLowerCase().replace(/\s+/g, "-"))}/1000/720?grayscale`,
+        text: project.title,
+      })),
+    [],
+  );
 
   return (
     <section id="projects" className="py-24 px-6" ref={ref}>
@@ -68,83 +77,36 @@ const ProjectsSection = () => {
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>projects
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-2 text-foreground">
+          <ScrollFloat
+            containerClassName="text-3xl md:text-4xl font-bold mb-2 text-foreground"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
             Featured Projects
-          </h2>
+          </ScrollFloat>
           <p className="text-muted-foreground text-sm mb-10">
-            <span className="text-terminal-green">{projects.length}</span> projects — click to expand
+            <span className="text-terminal-green">{projects.length}</span> projects — scroll to explore
           </p>
         </motion.div>
 
-        <ScrollStack
-          className="mx-auto w-full max-w-3xl"
-          itemDistance={36}
-          itemScale={0.025}
-          itemStackDistance={24}
-          stackPosition="16%"
-          scaleEndPosition="8%"
-          baseScale={0.9}
-          scaleDuration={0.3}
-          blurAmount={0.8}
-          useWindowScroll
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.15 }}
+          className="circ-wrap"
         >
-          {projects.map((project, i) => (
-            <ScrollStackItem
-              key={i}
-              itemClassName={`group p-6 terminal-border bg-card cursor-none transition-all duration-300 ${
-                expanded === i ? "border-terminal-green/40 bg-terminal-green/5" : "hover:border-muted-foreground/30"
-              }`}
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: i * 0.08 }}
-                onClick={() => setExpanded(expanded === i ? null : i)}
-              >
-                {/* Header */}
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <span className="text-[10px] text-terminal-dim tracking-widest uppercase block mb-1">
-                      {project.category}
-                    </span>
-                    <h3 className="text-lg font-semibold text-foreground group-hover:text-terminal-green transition-colors">
-                      {project.title}
-                    </h3>
-                  </div>
-                  <motion.span
-                    animate={{ rotate: expanded === i ? 45 : 0 }}
-                    className="text-terminal-green text-xl leading-none mt-1"
-                  >
-                    +
-                  </motion.span>
-                </div>
-
-                {/* Expandable content */}
-                <motion.div
-                  initial={false}
-                  animate={{ height: expanded === i ? "auto" : 0, opacity: expanded === i ? 1 : 0 }}
-                  className="overflow-hidden"
-                >
-                  <p className="text-xs text-muted-foreground leading-relaxed mb-4">
-                    {project.desc}
-                  </p>
-                </motion.div>
-
-                {/* Tech tags */}
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {project.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="text-[10px] px-2 py-0.5 bg-secondary text-muted-foreground tracking-wider"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            </ScrollStackItem>
-          ))}
-        </ScrollStack>
+          <CircularGallery
+            items={galleryItems}
+            bend={0}
+            textColor="#ffffff"
+            borderRadius={0.03}
+            scrollSpeed={2.9}
+            scrollEase={0.05}
+          />
+        </motion.div>
       </div>
     </section>
   );

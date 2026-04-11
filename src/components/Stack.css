@@ -1,0 +1,30 @@
+.stack-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1200px;
+}
+
+.card-rotate,
+.card-rotate-disabled {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+}
+
+.card {
+    position: absolute;
+    inset: 0;
+    border: 1px solid hsl(0 0% 100% / 0.14);
+    background: hsl(0 0% 6% / 0.9);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px hsl(0 0% 0% / 0.45);
+    cursor: none;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

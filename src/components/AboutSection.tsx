@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import ScrollFloat from "@/components/ScrollFloat";
 
 const interests = [
   { title: "Web Development (MEAN Stack)", desc: "Crafting smooth, responsive, and interactive user interfaces using modern web technologies." },
@@ -82,9 +83,16 @@ const AboutSection = () => {
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>about
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-2 text-foreground">
+          <ScrollFloat
+            containerClassName="text-3xl md:text-4xl font-bold mb-2 text-foreground"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
             Career Objective
-          </h2>
+          </ScrollFloat>
           <p className="text-muted-foreground text-sm max-w-2xl mb-12 leading-relaxed">
             A motivated and detail-oriented individual pursuing Information Technology, passionate about applying technical expertise and problem-solving skills to craft innovative web development and IT solutions.
           </p>
@@ -99,24 +107,21 @@ const AboutSection = () => {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.15, duration: 0.5 }}
               onClick={() => setActiveInterest(i)}
-              className={`relative p-6 terminal-border cursor-none transition-all duration-300 ${
-                activeInterest === i
+              className={`relative p-6 terminal-border cursor-none transition-all duration-300 ${activeInterest === i
                   ? "bg-terminal-green/5 border-terminal-green/40"
                   : "bg-card hover:bg-secondary/50"
-              }`}
+                }`}
             >
               {/* Toggle indicator */}
               <div className="flex items-center gap-3 mb-3">
-                <div className={`w-3 h-3 rounded-full transition-colors ${
-                  activeInterest === i ? "bg-terminal-green animate-pulse-glow" : "bg-muted-foreground/30"
-                }`} />
+                <div className={`w-3 h-3 rounded-full transition-colors ${activeInterest === i ? "bg-terminal-green animate-pulse-glow" : "bg-muted-foreground/30"
+                  }`} />
                 <span className="text-xs text-muted-foreground tracking-widest uppercase">
                   0{i + 1}
                 </span>
               </div>
-              <h3 className={`text-sm font-semibold mb-2 transition-colors ${
-                activeInterest === i ? "text-terminal-green" : "text-foreground"
-              }`}>
+              <h3 className={`text-sm font-semibold mb-2 transition-colors ${activeInterest === i ? "text-terminal-green" : "text-foreground"
+                }`}>
                 {item.title}
               </h3>
               <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>

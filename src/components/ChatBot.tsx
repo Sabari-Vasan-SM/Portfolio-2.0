@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { CopilotIcon } from "@primer/octicons-react";
 
 type Msg = { role: "user" | "bot"; text: string };
 
@@ -45,8 +46,13 @@ const ChatBot = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         animate={{ boxShadow: open ? "none" : "0 0 15px hsl(0 0% 100% / 0.1)" }}
+        aria-label="Toggle assistant"
       >
-        <span className="text-terminal-green text-lg">{open ? "×" : ">"}</span>
+        {open ? (
+          <span className="text-terminal-green text-lg">×</span>
+        ) : (
+          <CopilotIcon size={20} className="text-terminal-green" />
+        )}
       </motion.button>
 
       <AnimatePresence>
@@ -59,16 +65,15 @@ const ChatBot = () => {
           >
             {/* Header */}
             <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-terminal-green animate-pulse-glow" />
+              <CopilotIcon size={14} className="text-terminal-green" />
               <span className="text-xs text-terminal-green tracking-widest">ASSISTANT</span>
             </div>
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3 max-h-60">
               {messages.map((msg, i) => (
-                <div key={i} className={`text-xs leading-relaxed ${
-                  msg.role === "user" ? "text-terminal-cyan text-right" : "text-foreground"
-                }`}>
+                <div key={i} className={`text-xs leading-relaxed ${msg.role === "user" ? "text-terminal-cyan text-right" : "text-foreground"
+                  }`}>
                   <span className="text-muted-foreground mr-1">
                     {msg.role === "user" ? "you>" : "bot>"}
                   </span>

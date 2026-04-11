@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import ScrollFloat from "@/components/ScrollFloat";
 
 const experiences = [
   { role: "Software Developer", company: "Harvee Designs", location: "Coimbatore", duration: "Currently", type: "Full Time" },
@@ -26,15 +27,22 @@ const ExperienceSection = () => {
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>experience
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-foreground">
+          <ScrollFloat
+            containerClassName="text-3xl md:text-4xl font-bold mb-10 text-foreground"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
             Professional Journey
-          </h2>
+          </ScrollFloat>
         </motion.div>
 
         <div className="relative mb-20">
           {/* Timeline line */}
           <div className="absolute left-4 top-0 bottom-0 w-px bg-border" />
-          
+
           {experiences.map((exp, i) => (
             <motion.div
               key={i}
@@ -44,15 +52,13 @@ const ExperienceSection = () => {
               className="relative pl-12 pb-10 last:pb-0"
             >
               {/* Dot */}
-              <div className={`absolute left-[11px] top-1 w-[10px] h-[10px] rounded-full ${
-                i === 0 ? "bg-terminal-green animate-pulse-glow" : "bg-muted-foreground/40"
-              }`} />
-              
+              <div className={`absolute left-[11px] top-1 w-[10px] h-[10px] rounded-full ${i === 0 ? "bg-terminal-green animate-pulse-glow" : "bg-muted-foreground/40"
+                }`} />
+
               <div className="terminal-border p-5 bg-card hover:bg-secondary/30 transition-colors">
                 <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <span className={`text-[10px] px-2 py-0.5 tracking-widest uppercase ${
-                    exp.type === "Full Time" ? "bg-terminal-green/10 text-terminal-green" : "bg-secondary text-muted-foreground"
-                  }`}>
+                  <span className={`text-[10px] px-2 py-0.5 tracking-widest uppercase ${exp.type === "Full Time" ? "bg-terminal-green/10 text-terminal-green" : "bg-secondary text-muted-foreground"
+                    }`}>
                     {exp.type}
                   </span>
                   <span className="text-[10px] text-muted-foreground">{exp.duration}</span>
@@ -69,9 +75,16 @@ const ExperienceSection = () => {
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>education
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-foreground">
+          <ScrollFloat
+            containerClassName="text-3xl md:text-4xl font-bold mb-10 text-foreground"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
             Education
-          </h2>
+          </ScrollFloat>
         </motion.div>
 
         <div className="relative mx-auto max-w-5xl">
@@ -90,11 +103,10 @@ const ExperienceSection = () => {
                   className="relative md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-6"
                 >
                   <div
-                    className={`w-full md:max-w-sm ${
-                      leftAligned
+                    className={`w-full md:max-w-sm ${leftAligned
                         ? "md:col-start-1 md:justify-self-end"
                         : "md:col-start-3 md:justify-self-start"
-                    }`}
+                      }`}
                   >
                     <div className="terminal-border rounded-xl bg-card p-5 shadow-[0_0_20px_hsl(0_0%_100%_/_0.03)] transition-all hover:border-terminal-green/30">
                       <h3 className="text-xl font-bold text-foreground">{edu.degree}</h3>
@@ -116,11 +128,10 @@ const ExperienceSection = () => {
                   </div>
 
                   <div
-                    className={`hidden md:block ${
-                      leftAligned
+                    className={`hidden md:block ${leftAligned
                         ? "md:col-start-3 md:justify-self-start"
                         : "md:col-start-1 md:justify-self-end"
-                    }`}
+                      }`}
                   >
                     <span className="inline-flex items-center rounded-full border border-terminal-green/35 bg-secondary/40 px-3 py-1 text-xs text-muted-foreground">
                       <span className="mr-1 text-terminal-green">*</span>

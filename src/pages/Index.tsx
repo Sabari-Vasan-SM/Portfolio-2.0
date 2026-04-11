@@ -11,6 +11,7 @@ import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
 import ChatBot from "@/components/ChatBot";
 import CustomCursor from "@/components/CustomCursor";
+import DotGrid from "@/components/DotGrid";
 
 const Index = () => {
   useEffect(() => {
@@ -24,19 +25,37 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-background overflow-x-hidden">
-      <CustomCursor />
-      <NavBar />
-      <HeroSection />
-      <AboutSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <ExperienceSection />
-      <CertificationsSection />
-      <TerminalSection />
-      <ContactSection />
-      <FooterSection />
-      <ChatBot />
+    <div className="relative min-h-screen overflow-x-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <DotGrid
+          dotSize={4}
+          gap={16}
+          baseColor="#101010"
+          activeColor="#787878"
+          proximity={100}
+          shockRadius={250}
+          shockStrength={4}
+          resistance={750}
+          returnDuration={1.5}
+        />
+      </div>
+
+      <div className="fixed inset-0 z-[1] bg-background/85" />
+
+      <div className="relative z-10">
+        <CustomCursor />
+        <NavBar />
+        <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <ProjectsSection />
+        <ExperienceSection />
+        <CertificationsSection />
+        <TerminalSection />
+        <ContactSection />
+        <FooterSection />
+        <ChatBot />
+      </div>
     </div>
   );
 };

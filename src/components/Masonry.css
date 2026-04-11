@@ -1,80 +1,78 @@
 .masonry-list {
-  position: relative;
-  width: 100%;
-  overflow: visible;
+    position: relative;
+    width: 100%;
+    overflow: visible;
 }
 
 .masonry-item-wrapper {
-  position: absolute;
-  padding: 0.5rem;
-  cursor: none;
+    position: absolute;
+    padding: 0.5rem;
+    cursor: none;
 }
 
 .masonry-item {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  border: 1px solid hsl(0 0% 100% / 0.12);
-  background: hsl(0 0% 6%);
-  box-shadow: 0 0 20px hsl(0 0% 100% / 0.04);
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid hsl(0 0% 100% / 0.12);
+    background: hsl(0 0% 6%);
+    box-shadow: 0 0 20px hsl(0 0% 100% / 0.04);
 }
 
 .masonry-item-image {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: grayscale(1) contrast(1.05);
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(1) contrast(1.05);
 }
 
 .masonry-item-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    hsl(0 0% 0% / 0.9) 0%,
-    hsl(0 0% 0% / 0.6) 35%,
-    hsl(0 0% 0% / 0.15) 70%,
-    hsl(0 0% 0% / 0.05) 100%
-  );
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top,
+            hsl(0 0% 0% / 0.9) 0%,
+            hsl(0 0% 0% / 0.6) 35%,
+            hsl(0 0% 0% / 0.15) 70%,
+            hsl(0 0% 0% / 0.05) 100%);
 }
 
 .masonry-item-content {
-  position: absolute;
-  left: 0.9rem;
-  right: 0.9rem;
-  bottom: 0.9rem;
+    position: absolute;
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: 0.9rem;
 }
 
 .masonry-item-year {
-  display: inline-block;
-  margin-bottom: 0.45rem;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: hsl(0 0% 70%);
+    display: inline-block;
+    margin-bottom: 0.45rem;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: hsl(0 0% 70%);
 }
 
 .masonry-item-title {
-  margin: 0;
-  color: hsl(0 0% 95%);
-  font-size: 0.88rem;
-  font-weight: 600;
-  line-height: 1.25;
+    margin: 0;
+    color: hsl(0 0% 95%);
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.25;
 }
 
 .masonry-item-subtitle {
-  margin: 0.35rem 0 0;
-  color: hsl(0 0% 70%);
-  font-size: 0.72rem;
-  line-height: 1.3;
+    margin: 0.35rem 0 0;
+    color: hsl(0 0% 70%);
+    font-size: 0.72rem;
+    line-height: 1.3;
 }
 
 .masonry-color-overlay {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  background: linear-gradient(45deg, hsl(0 0% 100% / 0.25), hsl(0 0% 70% / 0.25));
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(45deg, hsl(0 0% 100% / 0.25), hsl(0 0% 70% / 0.25));
 }

@@ -1,6 +1,8 @@
 import { motion, useInView } from "framer-motion";
 import { useMemo, useRef } from "react";
 import Masonry from "@/components/Masonry";
+import ScrollFloat from "@/components/ScrollFloat";
+import Stack from "@/components/Stack";
 
 const certifications = [
   { title: "MongoDB Associate Developer", org: "MongoDB", year: "2025" },
@@ -14,10 +16,28 @@ const certifications = [
 
 const achievements = [
   {
+    title: "MongoDB Certificate",
+    desc: "Successfully completed MongoDB certification, mastering database design, querying, and advanced database management techniques.",
+    year: "2024",
+    type: "Certificate",
+  },
+  {
     title: "International Conference Paper Presentation",
-    desc: "Presented research paper on Automated Fault Diagnosis of Gear Tooth Defects Using Deep Learning at ICPCCT '25, Sona College of Technology.",
+    desc: "Presented research paper on Automated Fault Diagnosis of Gear Tooth Defects Using Deep Learning at International Conference on Power Control & Computing Technologies '25, Sona College of Technology.",
     year: "2024",
     type: "Presentation",
+  },
+  {
+    title: "Selected for Hackathon",
+    desc: "Successfully selected to participate in a prestigious Smart India Hackathon competition, showcasing innovative problem-solving skills and technical expertise.",
+    year: "2024",
+    type: "Selection",
+  },
+  {
+    title: "2nd Prize in Hackathon",
+    desc: "Achieved second place in a competitive hackathon, demonstrating exceptional coding skills and innovative solution development.",
+    year: "2024",
+    type: "Award",
   },
 ];
 
@@ -62,6 +82,30 @@ const CertificationsSection = () => {
     [],
   );
 
+  const achievementCards = useMemo(
+    () =>
+      achievements.map((a, index) => (
+        <div key={`${a.title}-${index}`} className="h-full w-full bg-card p-5 md:p-6">
+          <p className="text-[10px] text-terminal-dim tracking-widest uppercase mb-2">Recognition - Year</p>
+          <p className="text-2xl font-bold text-terminal-green text-glow mb-4">{a.year}</p>
+
+          <p className="text-[10px] px-2 py-1 inline-block bg-terminal-amber/10 text-terminal-amber tracking-widest uppercase mb-3">
+            {a.type}
+          </p>
+
+          <h3 className="text-base md:text-lg font-semibold text-foreground mb-2">{a.title}</h3>
+          <p className="text-xs text-muted-foreground leading-relaxed">{a.desc}</p>
+
+          <div className="mt-5 pt-3 border-t border-border/60">
+            <p className="text-[10px] text-terminal-dim tracking-widest uppercase mb-1">Achievement Type</p>
+            <p className="text-xs text-muted-foreground">{a.type},Year</p>
+            <p className="text-xs text-terminal-green mt-1">{a.year}</p>
+          </div>
+        </div>
+      )),
+    [],
+  );
+
   return (
     <section id="certifications" className="py-24 px-6" ref={ref}>
       <div className="max-w-5xl mx-auto">
@@ -69,9 +113,16 @@ const CertificationsSection = () => {
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>credentials
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-foreground">
+          <ScrollFloat
+            containerClassName="text-3xl md:text-4xl font-bold mb-10 text-foreground"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
             Certifications
-          </h2>
+          </ScrollFloat>
         </motion.div>
 
         <motion.div
@@ -98,29 +149,34 @@ const CertificationsSection = () => {
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>achievements
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-foreground">
+          <ScrollFloat
+            containerClassName="text-3xl md:text-4xl font-bold mb-10 text-foreground"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
             Recognition
-          </h2>
+          </ScrollFloat>
         </motion.div>
 
-        {achievements.map((a, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.5 }}
-            className="p-6 terminal-border bg-card border-terminal-amber/20"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-[10px] px-2 py-0.5 bg-terminal-amber/10 text-terminal-amber tracking-widest uppercase">
-                {a.type}
-              </span>
-              <span className="text-[10px] text-muted-foreground">{a.year}</span>
-            </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">{a.title}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{a.desc}</p>
-          </motion.div>
-        ))}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.45 }}
+          className="mx-auto h-[380px] w-full max-w-2xl"
+        >
+          <Stack
+            randomRotation={false}
+            sensitivity={200}
+            sendToBackOnClick
+            cards={achievementCards}
+            autoplay={false}
+            autoplayDelay={3000}
+            pauseOnHover={false}
+          />
+        </motion.div>
       </div>
     </section>
   );

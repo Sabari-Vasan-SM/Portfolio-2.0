@@ -1,11 +1,19 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import { Github, Linkedin, Mail } from "lucide-react";
+import ScrollFloat from "@/components/ScrollFloat";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [focused, setFocused] = useState<string | null>(null);
+
+  const socialLinks = [
+    { label: "GitHub", href: "https://github.com/SabariVasan", icon: Github },
+    { label: "LinkedIn", href: "https://linkedin.com/in/sabarivasan", icon: Linkedin },
+    { label: "Email", href: "mailto:sabarivasan1239@gmail.com", icon: Mail },
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,9 +28,16 @@ const ContactSection = () => {
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>contact
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-foreground">
+          <ScrollFloat
+            containerClassName="text-3xl md:text-4xl font-bold mb-10 text-foreground"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
             Get In Touch
-          </h2>
+          </ScrollFloat>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -60,6 +75,37 @@ const ContactSection = () => {
                 )}
               </motion.div>
             ))}
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.6 }}
+              className="pt-1"
+            >
+              <p className="text-[10px] text-terminal-dim tracking-widest uppercase mb-3">
+                Connect
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {socialLinks.map((social) => {
+                  const Icon = social.icon;
+
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-3 py-2 terminal-border bg-card hover:border-terminal-green/40 hover:bg-terminal-green/5 transition-all cursor-none"
+                    >
+                      <span className="inline-flex h-8 w-8 items-center justify-center border border-terminal-green/35 bg-background text-terminal-green">
+                        <Icon size={14} />
+                      </span>
+                      <span className="text-xs text-muted-foreground">{social.label}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </motion.div>
           </motion.div>
 
           {/* Terminal-style form */}
@@ -88,9 +134,8 @@ const ContactSection = () => {
                     onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
                     onFocus={() => setFocused(field)}
                     onBlur={() => setFocused(null)}
-                    className={`w-full bg-background p-3 text-sm text-foreground outline-none transition-all cursor-none resize-none ${
-                      focused === field ? "terminal-border border-terminal-green/40" : "terminal-border"
-                    }`}
+                    className={`w-full bg-background p-3 text-sm text-foreground outline-none transition-all cursor-none resize-none ${focused === field ? "terminal-border border-terminal-green/40" : "terminal-border"
+                      }`}
                     required
                   />
                 ) : (
@@ -100,9 +145,8 @@ const ContactSection = () => {
                     onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
                     onFocus={() => setFocused(field)}
                     onBlur={() => setFocused(null)}
-                    className={`w-full bg-background p-3 text-sm text-foreground outline-none transition-all cursor-none ${
-                      focused === field ? "terminal-border border-terminal-green/40" : "terminal-border"
-                    }`}
+                    className={`w-full bg-background p-3 text-sm text-foreground outline-none transition-all cursor-none ${focused === field ? "terminal-border border-terminal-green/40" : "terminal-border"
+                      }`}
                     required
                   />
                 )}

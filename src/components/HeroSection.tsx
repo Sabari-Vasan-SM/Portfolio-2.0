@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import profileImage from "@/assets/profile.png";
+import resumeFile from "@/assets/resume.pdf";
 import BlurText from "@/components/BlurText";
+import ScrambledText from "@/components/ScrambledText";
 import TextType from "@/components/TextType";
 
 const roles = ["WebCraftsman", "TechAficionado", "AI-DrivenCoder", "FullStackDev"];
@@ -18,12 +20,12 @@ const HeroSection = () => {
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden noise-bg">
       {/* Scanline overlay */}
       <div className="absolute inset-0 scanline pointer-events-none opacity-50" />
-      
-      {/* Grid background */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: "linear-gradient(hsl(0 0% 100%) 1px, transparent 1px), linear-gradient(90deg, hsl(0 0% 100%) 1px, transparent 1px)",
-        backgroundSize: "60px 60px"
-      }} />
+
+      <div className="absolute left-1/2 top-6 z-20 w-[min(92vw,760px)] -translate-x-1/2 border border-white/10 bg-background/35 px-4 py-3 text-center text-xs leading-relaxed text-muted-foreground backdrop-blur-sm md:top-8 md:text-sm">
+        <ScrambledText radius={100} duration={1.2} speed={0.5} scrambleChars=".:" className="hero-quote-scramble">
+          "even something is not achieved by fate or divine help,consitancy effort & hardwork ,will pay you a roghtful reward !!"
+        </ScrambledText>
+      </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
         <motion.div
@@ -78,7 +80,7 @@ const HeroSection = () => {
             {/* Interactive controls */}
             <div className="flex flex-col sm:flex-row gap-4 justify-start items-start sm:items-center">
               <motion.button
-                onClick={() => scrollTo("projects")}
+                onClick={() => window.open(resumeFile, "_blank", "noopener,noreferrer")}
                 className="group relative px-8 py-3 terminal-border text-terminal-green text-sm tracking-widest uppercase overflow-hidden cursor-none"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -86,7 +88,7 @@ const HeroSection = () => {
                 <span className="absolute inset-0 bg-terminal-green/0 group-hover:bg-terminal-green/10 transition-colors duration-300" />
                 <span className="relative flex items-center gap-2">
                   <span className="text-terminal-dim">[</span>
-                  View Projects
+                  View Resume
                   <span className="text-terminal-dim">]</span>
                 </span>
               </motion.button>
@@ -110,7 +112,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="flex justify-center md:justify-end"
+            className="flex flex-col items-center justify-start gap-5 pt-2 md:items-center md:justify-start"
           >
             <div className="h-72 w-72 md:h-96 md:w-96 overflow-hidden rounded-full border border-terminal-green/40 shadow-[0_0_35px_hsl(145_85%_60%_/_0.2)]">
               <img

@@ -1,5 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import ScrollFloat from "@/components/ScrollFloat";
+import { AnimatedCarousel } from "@/components/AnimatedCarousel";
 
 const skillCategories = [
   {
@@ -47,9 +49,29 @@ const SkillsSection = () => {
           <p className="text-terminal-dim text-xs tracking-widest mb-2">
             <span className="text-terminal-green">~/</span>skills
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-foreground">
+          <ScrollFloat
+            containerClassName="text-3xl md:text-4xl font-bold mb-10 text-foreground"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
             Technical Expertise
-          </h2>
+          </ScrollFloat>
+
+          <AnimatedCarousel
+            title="Core Technologies"
+            autoPlay
+            autoPlayInterval={1200}
+            itemsPerViewMobile={3}
+            itemsPerViewDesktop={7}
+            spacing="gap-4"
+            padding="py-0"
+            logoContainerWidth="w-24"
+            logoContainerHeight="h-14"
+            containerClassName="mb-8"
+          />
         </motion.div>
 
         {/* Tab slider */}
@@ -58,11 +80,10 @@ const SkillsSection = () => {
             <button
               key={i}
               onClick={() => setActiveTab(i)}
-              className={`px-3 py-1.5 text-xs tracking-wider transition-all cursor-none ${
-                activeTab === i
+              className={`px-3 py-1.5 text-xs tracking-wider transition-all cursor-none ${activeTab === i
                   ? "bg-terminal-green/10 text-terminal-green terminal-border"
                   : "text-muted-foreground hover:text-foreground"
-              }`}
+                }`}
             >
               {cat.name}
             </button>
