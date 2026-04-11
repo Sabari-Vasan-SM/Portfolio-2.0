@@ -1,19 +1,20 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { Eye } from "lucide-react";
+import { useState } from "react";
 import profileImage from "@/assets/profile.png";
 import resumeFile from "@/assets/resume.pdf";
 import BlurText from "@/components/BlurText";
+import LanyardCard from "@/components/LanyardCard";
 import ScrambledText from "@/components/ScrambledText";
 import TextType from "@/components/TextType";
 
 const roles = ["WebCraftsman", "TechAficionado", "AI-DrivenCoder", "FullStackDev"];
 
 const HeroSection = () => {
+  const [showLanyardPopup, setShowLanyardPopup] = useState(false);
+
   const handleAnimationComplete = () => {
     console.log("Animation completed!");
-  };
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -21,9 +22,9 @@ const HeroSection = () => {
       {/* Scanline overlay */}
       <div className="absolute inset-0 scanline pointer-events-none opacity-50" />
 
-      <div className="absolute left-1/2 top-6 z-20 w-[min(92vw,760px)] -translate-x-1/2 border border-white/10 bg-background/35 px-4 py-3 text-center text-xs leading-relaxed text-muted-foreground backdrop-blur-sm md:top-8 md:text-sm">
+      <div className="absolute left-1/2 top-6 z-20 w-[min(95vw,980px)] -translate-x-1/2 border border-white/10 bg-background/35 px-4 py-3 text-center text-xs leading-relaxed text-muted-foreground backdrop-blur-sm md:top-8 md:text-sm">
         <ScrambledText radius={100} duration={1.2} speed={0.5} scrambleChars=".:" className="hero-quote-scramble">
-          "even something is not achieved by fate or divine help,consitancy effort & hardwork ,will pay you a roghtful reward !!"
+          "Even something is not achieved by fate or divine help,consitancy effort & Hardwork ,will pay you a rightful reward !!"
         </ScrambledText>
       </div>
 
@@ -88,21 +89,23 @@ const HeroSection = () => {
                 <span className="absolute inset-0 bg-terminal-green/0 group-hover:bg-terminal-green/10 transition-colors duration-300" />
                 <span className="relative flex items-center gap-2">
                   <span className="text-terminal-dim">[</span>
+                  <Eye size={16} className="text-terminal-green/90" />
                   View Resume
                   <span className="text-terminal-dim">]</span>
                 </span>
               </motion.button>
 
               <motion.button
-                onClick={() => scrollTo("terminal")}
+                onClick={() => setShowLanyardPopup(true)}
                 className="group relative px-8 py-3 terminal-border text-muted-foreground text-sm tracking-widest uppercase overflow-hidden cursor-none"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <span className="absolute inset-0 bg-terminal-green/0 group-hover:bg-terminal-green/5 transition-colors duration-300" />
                 <span className="relative flex items-center gap-2">
-                  <span className="text-terminal-dim">~/</span>
-                  Open Terminal
+                  <span className="text-terminal-dim">[</span>
+                  Full Stack Dev
+                  <span className="text-terminal-dim">]</span>
                 </span>
               </motion.button>
             </div>
@@ -133,6 +136,38 @@ const HeroSection = () => {
           <div className="w-px h-12 bg-gradient-to-b from-terminal-green/60 to-transparent" />
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {showLanyardPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] flex items-center justify-center bg-black/75 px-4 backdrop-blur-md"
+            onClick={() => setShowLanyardPopup(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.24 }}
+              className="relative w-full max-w-[640px]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setShowLanyardPopup(false)}
+                className="absolute -right-2 -top-3 z-20 h-9 w-9 rounded-full border border-white/30 bg-zinc-900/95 text-zinc-100 shadow-[0_0_16px_rgba(255,255,255,0.2)] transition-colors hover:border-white/70 cursor-none"
+                aria-label="Close full stack card"
+              >
+                x
+              </button>
+
+              <LanyardCard />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

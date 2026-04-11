@@ -1,11 +1,11 @@
 .text-block {
-  width: 100%;
+    width: 100%;
 }
 
 .text-block p {
-  margin: 0;
+    margin: 0;
 }
 
 .text-block .char {
-  will-change: contents;
+    will-change: contents;
 }
