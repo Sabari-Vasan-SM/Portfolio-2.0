@@ -18,11 +18,11 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden noise-bg">
+    <section id="hero" className="relative flex min-h-screen items-center justify-center overflow-hidden noise-bg pt-20 md:pt-0">
       {/* Scanline overlay */}
       <div className="absolute inset-0 scanline pointer-events-none opacity-50" />
 
-      <div className="absolute left-1/2 top-6 z-20 w-[min(99vw,1320px)] -translate-x-1/2 whitespace-nowrap border border-white/10 bg-background/35 px-3 py-3 text-center text-[clamp(0.55rem,0.9vw,0.92rem)] leading-relaxed text-muted-foreground backdrop-blur-sm md:top-8">
+      <div className="absolute left-1/2 top-6 z-20 hidden w-[min(99vw,1320px)] -translate-x-1/2 whitespace-nowrap border border-white/10 bg-background/35 px-3 py-3 text-center text-[clamp(0.55rem,0.9vw,0.92rem)] leading-relaxed text-muted-foreground backdrop-blur-sm md:block md:top-8">
         <ScrambledText radius={100} duration={1.2} speed={0.5} scrambleChars=".:" className="hero-quote-scramble">
           "Even something is not achieved by fate or divine help,consitancy effort & Hardwork ,will pay you a rightful reward !!"
         </ScrambledText>

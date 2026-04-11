@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, type ReactNode, type RefObject } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useIsMobile } from "@/hooks/use-mobile";
 import "./ScrollFloat.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -29,6 +30,7 @@ const ScrollFloat = ({
     stagger = 0.03,
 }: ScrollFloatProps) => {
     const containerRef = useRef<HTMLHeadingElement>(null);
+    const isMobile = useIsMobile();
 
     const splitText = useMemo(() => {
         const text = typeof children === "string" ? children : "";
@@ -40,6 +42,8 @@ const ScrollFloat = ({
     }, [children]);
 
     useEffect(() => {
+        if (isMobile) return;
+
         const el = containerRef.current;
         if (!el) return;
 
@@ -76,7 +80,15 @@ const ScrollFloat = ({
         }, el);
 
         return () => ctx.revert();
-    }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
+    }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger, isMobile]);
+
+    if (isMobile) {
+        return (
+            <h2 ref={containerRef} className={`scroll-float ${containerClassName}`.trim()}>
+                <span className={`scroll-float-text ${textClassName}`.trim()}>{children}</span>
+            </h2>
+        );
+    }
 
     return (
         <h2 ref={containerRef} className={`scroll-float ${containerClassName}`.trim()}>

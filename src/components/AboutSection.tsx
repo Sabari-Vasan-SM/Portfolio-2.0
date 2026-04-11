@@ -3,9 +3,9 @@ import { useRef, useState, useEffect } from "react";
 import ScrollFloat from "@/components/ScrollFloat";
 
 const interests = [
-  { title: "Web Development (MEAN Stack)", desc: "Crafting smooth, responsive, and interactive user interfaces using modern web technologies." },
-  { title: "Cloud Computing", desc: "Leveraging cloud platforms to build scalable and efficient solutions." },
-  { title: "DevOps", desc: "Implementing CI/CD pipelines, automation, and monitoring for seamless workflows." },
+  { title: "Cross-Platform Development (Android, iOS, Web & Desktop)", desc: "Creating seamless, high-performance applications with consistent user experiences and reliable backend systems." },
+  { title: "Agentic Coding", desc: "Using AI agents and tools like Claude Code CLI, Cursor, Windsurf, and GitHub Copilot to build faster, more efficient, and secure applications, along with creating custom agents for task automation." },
+  { title: "DevOps", desc: "Shipping faster by implementing CI/CD pipelines, automation, and monitoring for seamless workflows, along with containerization using Docker, configuring Nginx, and handling domain setup and deployment." },
 ];
 
 type StatItem = {
@@ -93,9 +93,17 @@ const AboutSection = () => {
           >
             Career Objective
           </ScrollFloat>
-          <p className="text-muted-foreground text-sm max-w-2xl mb-12 leading-relaxed">
-            A motivated and detail-oriented individual pursuing Information Technology, passionate about applying technical expertise and problem-solving skills to craft innovative web development and IT solutions.
-          </p>
+          <div className="text-muted-foreground text-sm max-w-3xl mb-12 leading-relaxed space-y-4">
+            <p>
+              I'm a Full Stack Developer, building and scaling applications end-to-end from clean, responsive user interfaces to reliable backend services.
+            </p>
+            <p>
+              I work hands-on across the stack, turning product ideas into production-ready features, optimizing performance, and shipping code that's meant to scale, not just "work."
+            </p>
+            <p>
+              I actively use AI as a development accelerator from design exploration and architecture planning to debugging, refactoring, and improving code quality. I treat AI as a tool, not a shortcut: it helps me move faster, think clearer, and focus more on real engineering problems.
+            </p>
+          </div>
         </motion.div>
 
         {/* Interest cards as toggles */}
@@ -108,8 +116,8 @@ const AboutSection = () => {
               transition={{ delay: i * 0.15, duration: 0.5 }}
               onClick={() => setActiveInterest(i)}
               className={`relative p-6 terminal-border cursor-none transition-all duration-300 ${activeInterest === i
-                  ? "bg-terminal-green/5 border-terminal-green/40"
-                  : "bg-card hover:bg-secondary/50"
+                ? "bg-terminal-green/5 border-terminal-green/40"
+                : "bg-card hover:bg-secondary/50"
                 }`}
             >
               {/* Toggle indicator */}

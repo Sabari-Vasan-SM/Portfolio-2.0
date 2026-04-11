@@ -12,8 +12,11 @@ import FooterSection from "@/components/FooterSection";
 import ChatBot from "@/components/ChatBot";
 import CustomCursor from "@/components/CustomCursor";
 import DotGrid from "@/components/DotGrid";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     const prevScrollRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
@@ -43,7 +46,7 @@ const Index = () => {
       <div className="fixed inset-0 z-[1] bg-background/85" />
 
       <div className="relative z-10">
-        <CustomCursor />
+        {!isMobile && <CustomCursor />}
         <NavBar />
         <HeroSection />
         <AboutSection />
