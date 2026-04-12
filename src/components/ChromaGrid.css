@@ -13,6 +13,9 @@
     overflow-y: hidden;
     padding: 0.25rem 0 1rem;
     scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
     --x: 50%;
     --y: 50%;
     --r: 300px;
@@ -75,6 +78,28 @@
     flex: 0 0 min(320px, 82vw);
     min-width: min(320px, 82vw);
     scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .chroma-grid {
+        scroll-snap-type: x proximity;
+    }
+
+    .chroma-card,
+    .chroma-card:hover,
+    .chroma-card:hover .chroma-img-wrapper img {
+        transform: none;
+    }
+
+    .chroma-card::before,
+    .chroma-overlay {
+        opacity: 0;
+    }
+
+    .chroma-img-wrapper img {
+        transition: none;
+    }
 }
 
 .chroma-card:hover {

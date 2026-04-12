@@ -43,6 +43,8 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
     const fadeRef = useRef<HTMLDivElement>(null);
     const rafRef = useRef<number | null>(null);
     const isPausedRef = useRef(false);
+    const isTouchingRef = useRef(false);
+    const isCoarsePointerRef = useRef(false);
     const setX = useRef<SetterFn | null>(null);
     const setY = useRef<SetterFn | null>(null);
     const pos = useRef({ x: 0, y: 0 });
@@ -108,6 +110,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
     useEffect(() => {
         const el = rootRef.current;
         if (!el) return;
+        isCoarsePointerRef.current = window.matchMedia("(hover: none), (pointer: coarse)").matches;
         setX.current = gsap.quickSetter(el, "--x", "px") as SetterFn;
         setY.current = gsap.quickSetter(el, "--y", "px") as SetterFn;
         const { width, height } = el.getBoundingClientRect();
@@ -116,7 +119,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
         setY.current(pos.current.y);
 
         const autoScroll = () => {
-            if (!isPausedRef.current) {
+            if (!isPausedRef.current && !isCoarsePointerRef.current) {
                 const maxScrollLeft = el.scrollWidth - el.clientWidth;
                 if (maxScrollLeft > 0) {
                     el.scrollLeft += 0.35;
@@ -153,6 +156,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
     };
 
     const handleMove = (e: React.PointerEvent) => {
+        if (e.pointerType === "touch" || isCoarsePointerRef.current) return;
         const r = rootRef.current!;
         const rect = r.getBoundingClientRect();
         moveTo(e.clientX - rect.left, e.clientY - rect.top);
@@ -169,7 +173,19 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
     };
 
     const handleEnter = () => {
+        if (!isTouchingRef.current) {
+            isPausedRef.current = true;
+        }
+    };
+
+    const handleTouchStart = () => {
+        isTouchingRef.current = true;
         isPausedRef.current = true;
+    };
+
+    const handleTouchEnd = () => {
+        isTouchingRef.current = false;
+        isPausedRef.current = false;
     };
 
     const handleCardClick = (projectData?: any) => {
@@ -181,6 +197,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
     };
 
     const handleCardMove: React.MouseEventHandler<HTMLElement> = (e) => {
+        if (isCoarsePointerRef.current) return;
         const card = e.currentTarget as HTMLElement;
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -194,6 +211,8 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
             <div
                 ref={rootRef}
                 className="chroma-grid"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
                 style={
                     {
                         "--r": `${radius}px`,
