@@ -69,7 +69,9 @@ const AnimatedCounter = ({
 
 const AboutSection = () => {
   const ref = useRef(null);
+  const statsRef = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-100px" });
+  const statsInView = useInView(statsRef, { once: false, margin: "-20% 0px -20% 0px" });
   const [activeInterest, setActiveInterest] = useState(0);
 
   return (
@@ -138,17 +140,17 @@ const AboutSection = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {stats.map((s, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0.9 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
+              animate={statsInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: 0.5 + i * 0.1 }}
               className="p-5 terminal-border text-center bg-card"
             >
               <div className="text-3xl font-bold text-terminal-green text-glow mb-1">
-                <AnimatedCounter target={s.value} inView={inView} decimals={s.decimals} suffix={s.suffix} />
+                <AnimatedCounter target={s.value} inView={statsInView} decimals={s.decimals} suffix={s.suffix} />
               </div>
               <p className="text-xs text-muted-foreground tracking-wider">{s.label}</p>
             </motion.div>

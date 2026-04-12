@@ -31,10 +31,10 @@ const Index = () => {
     <div className="relative min-h-screen overflow-x-hidden">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <DotGrid
-          dotSize={4}
+          dotSize={5}
           gap={16}
-          baseColor="#101010"
-          activeColor="#787878"
+          baseColor="#2e2e2e"
+          activeColor="#c6c6c6"
           proximity={100}
           shockRadius={250}
           shockStrength={4}
@@ -43,7 +43,7 @@ const Index = () => {
         />
       </div>
 
-      <div className="fixed inset-0 z-[1] bg-background/85" />
+      <div className="fixed inset-0 z-[1] bg-background/70" />
 
       <div className="relative z-10">
         {!isMobile && <CustomCursor />}

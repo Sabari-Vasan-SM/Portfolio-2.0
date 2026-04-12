@@ -8,7 +8,13 @@ import LanyardCard from "@/components/LanyardCard";
 import ScrambledText from "@/components/ScrambledText";
 import TextType from "@/components/TextType";
 
-const roles = ["WebCraftsman", "TechAficionado", "AI-DrivenCoder", "FullStackDev"];
+const roles = [
+  "Full Stack Developer",
+  "AI Agentic Coding",
+  "From Idea → Production",
+  "Backend Tinkerer",
+  "Cross-Platform Builder",
+];
 
 const HeroSection = () => {
   const [showLanyardPopup, setShowLanyardPopup] = useState(false);
@@ -73,10 +79,6 @@ const HeroSection = () => {
                 className="text-terminal-cyan text-glow-cyan"
               />
             </div>
-
-            <p className="text-muted-foreground text-sm mb-10 tracking-wider">
-              Software Developer Intern
-            </p>
 
             {/* Interactive controls */}
             <div className="flex flex-col sm:flex-row gap-4 justify-start items-start sm:items-center">
