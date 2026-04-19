@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Eye } from "lucide-react";
 import { useState } from "react";
 import profileImage from "@/assets/profile.png";
-import resumeFile from "@/assets/resume.pdf";
+import resumeFile from "@/assets/Sabarivasan_Resume.pdf";
 import BlurText from "@/components/BlurText";
 import LanyardCard from "@/components/LanyardCard";
 import ScrambledText from "@/components/ScrambledText";
