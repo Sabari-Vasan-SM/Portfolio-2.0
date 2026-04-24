@@ -3,7 +3,7 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import CertificationCard from "@/components/CertificationCard";
 import ScrollFloat from "@/components/ScrollFloat";
 import Stack from "@/components/Stack";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const certificationsData = [
   {
@@ -120,13 +120,24 @@ const CertificationsSection = () => {
     const el = carouselRef.current;
     if (!el) return;
 
+    // Start in the middle to allow left sliding instantly
+    // We have 3 identical copies. Scroll to halfway point of first one.
+    const startPoint = el.scrollWidth / 3;
+    el.scrollLeft = startPoint;
+
     const autoScroll = () => {
       if (!isPausedRef.current) {
-        const maxScrollLeft = el.scrollWidth - el.clientWidth;
-        if (maxScrollLeft > 0) {
-          el.scrollLeft += 0.35;
-          if (el.scrollLeft >= maxScrollLeft - 1) {
-            el.scrollLeft = 0;
+        if (el.scrollWidth > el.clientWidth) {
+          el.scrollLeft += 1.5;
+          const singleCopyWidth = el.scrollWidth / 3;
+          
+          // Loop forward
+          if (el.scrollLeft >= singleCopyWidth * 2) {
+            el.scrollLeft -= singleCopyWidth;
+          } 
+          // Loop backward (if user scrolled left manually)
+          else if (el.scrollLeft <= singleCopyWidth / 2) {
+            el.scrollLeft += singleCopyWidth;
           }
         }
       }
@@ -142,6 +153,13 @@ const CertificationsSection = () => {
       }
     };
   }, []);
+
+  const slideCarousel = (direction: "left" | "right") => {
+    if (!carouselRef.current) return;
+    const cardWidth = window.innerWidth >= 1024 ? 360 : window.innerWidth >= 768 ? 320 : 280;
+    const scrollAmount = direction === "left" ? -(cardWidth + 16) : (cardWidth + 16);
+    carouselRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  };
 
   const handleCarouselEnter = () => {
     isPausedRef.current = true;
@@ -212,29 +230,44 @@ const CertificationsSection = () => {
           initial={{ opacity: 0, y: 18 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.08 }}
-          className="mb-20"
+          className="mb-20 relative group"
+          onMouseEnter={handleCarouselEnter}
+          onMouseLeave={handleCarouselLeave}
         >
+          {/* Left Arrow Button */}
+          <button
+            onClick={() => slideCarousel("left")}
+            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-background border border-terminal-dim/30 text-terminal-green opacity-0 group-hover:opacity-100 transition-all hover:bg-terminal-green/20 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] shadow-lg cursor-pointer"
+            aria-label="Previous certificates"
+          >
+            <ChevronLeft size={20} />
+          </button>
+
           {/* Carousel: Both Mobile & Desktop */}
           <div
             ref={carouselRef}
-            className="-mx-6 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            onMouseEnter={handleCarouselEnter}
-            onMouseLeave={handleCarouselLeave}
+            className="-mx-6 overflow-x-auto pb-4 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            <div className="flex w-max gap-4 px-6 snap-x snap-mandatory">
-              {certificationsData.map((cert, i) => (
-                <motion.div
-                  key={cert.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: i * 0.05 }}
-                  className="snap-start min-w-[280px] md:min-w-[320px] lg:min-w-[360px] max-w-[280px] md:max-w-[320px] lg:max-w-[360px]"
+            <div className="flex w-max gap-4 px-6">
+              {[...certificationsData, ...certificationsData, ...certificationsData].map((cert, i) => (
+                <div
+                  key={`${cert.id}-${i}`}
+                  className="min-w-[280px] md:min-w-[320px] lg:min-w-[360px] max-w-[280px] md:max-w-[320px] lg:max-w-[360px]"
                 >
                   <CertificationCard cert={cert} />
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
+
+          {/* Right Arrow Button */}
+          <button
+            onClick={() => slideCarousel("right")}
+            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-background border border-terminal-dim/30 text-terminal-green opacity-0 group-hover:opacity-100 transition-all hover:bg-terminal-green/20 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] shadow-lg cursor-pointer"
+            aria-label="Next certificates"
+          >
+            <ChevronRight size={20} />
+          </button>
         </motion.div>
 
         {/* Achievements */}
