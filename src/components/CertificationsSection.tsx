@@ -1,6 +1,5 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useMemo, useRef, useState, useEffect } from "react";
-import CertificationCard from "@/components/CertificationCard";
 import ScrollFloat from "@/components/ScrollFloat";
 import Stack from "@/components/Stack";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -99,9 +98,7 @@ const CertificationsSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number | null>(null);
-  const isPausedRef = useRef(false);
+  const [activeCert, setActiveCert] = useState<number | null>(0);
 
   useEffect(() => {
     if (selectedImage) {
@@ -115,58 +112,16 @@ const CertificationsSection = () => {
     };
   }, [selectedImage]);
 
-  // Auto-scroll effect
-  useEffect(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-
-    // Start in the middle to allow left sliding instantly
-    // We have 3 identical copies. Scroll to halfway point of first one.
-    const startPoint = el.scrollWidth / 3;
-    el.scrollLeft = startPoint;
-
-    const autoScroll = () => {
-      if (!isPausedRef.current) {
-        if (el.scrollWidth > el.clientWidth) {
-          el.scrollLeft += 1.5;
-          const singleCopyWidth = el.scrollWidth / 3;
-          
-          // Loop forward
-          if (el.scrollLeft >= singleCopyWidth * 2) {
-            el.scrollLeft -= singleCopyWidth;
-          } 
-          // Loop backward (if user scrolled left manually)
-          else if (el.scrollLeft <= singleCopyWidth / 2) {
-            el.scrollLeft += singleCopyWidth;
-          }
-        }
-      }
-
-      rafRef.current = window.requestAnimationFrame(autoScroll);
-    };
-
-    rafRef.current = window.requestAnimationFrame(autoScroll);
-
-    return () => {
-      if (rafRef.current) {
-        window.cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, []);
-
-  const slideCarousel = (direction: "left" | "right") => {
-    if (!carouselRef.current) return;
-    const cardWidth = window.innerWidth >= 1024 ? 360 : window.innerWidth >= 768 ? 320 : 280;
-    const scrollAmount = direction === "left" ? -(cardWidth + 16) : (cardWidth + 16);
-    carouselRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  const handleNextCert = () => {
+    if (activeCert !== null) {
+      setActiveCert((prev) => (prev! + 1) % certificationsData.length);
+    }
   };
 
-  const handleCarouselEnter = () => {
-    isPausedRef.current = true;
-  };
-
-  const handleCarouselLeave = () => {
-    isPausedRef.current = false;
+  const handlePrevCert = () => {
+    if (activeCert !== null) {
+      setActiveCert((prev) => (prev! - 1 + certificationsData.length) % certificationsData.length);
+    }
   };
 
   const achievementCards = useMemo(
@@ -230,44 +185,81 @@ const CertificationsSection = () => {
           initial={{ opacity: 0, y: 18 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.08 }}
-          className="mb-20 relative group"
-          onMouseEnter={handleCarouselEnter}
-          onMouseLeave={handleCarouselLeave}
+          className="mb-20 w-full flex flex-col justify-center items-center py-4 relative group"
         >
-          {/* Left Arrow Button */}
-          <button
-            onClick={() => slideCarousel("left")}
-            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-background border border-terminal-dim/30 text-terminal-green opacity-0 group-hover:opacity-100 transition-all hover:bg-terminal-green/20 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] shadow-lg cursor-pointer"
-            aria-label="Previous certificates"
-          >
-            <ChevronLeft size={20} />
-          </button>
+          <div className="flex w-full max-w-5xl items-center justify-center gap-1.5 md:gap-3 h-[24rem] md:h-[30rem] px-2 md:px-0">
+            {certificationsData.map((cert, index) => (
+              <motion.div
+                key={cert.id}
+                className="relative cursor-pointer overflow-hidden rounded-xl md:rounded-3xl border border-terminal-dim/30 hover:border-terminal-green/50 hover:shadow-lg hover:shadow-terminal-green/20 flex-shrink-0"
+                initial={{ width: "3.5rem" }}
+                animate={{
+                  width: activeCert === index ? (typeof window !== 'undefined' && window.innerWidth < 768 ? "80vw" : "32rem") : (typeof window !== 'undefined' && window.innerWidth < 768 ? "4vw" : "4.5rem"),
+                }}
+                transition={{ duration: 0.4, ease: "anticipate" }}
+                onClick={() => setActiveCert(index)}
+                onHoverStart={() => setActiveCert(index)}
+              >
+                <AnimatePresence>
+                  {activeCert === index && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 pointer-events-none"
+                    />
+                  )}
+                </AnimatePresence>
 
-          {/* Carousel: Both Mobile & Desktop */}
-          <div
-            ref={carouselRef}
-            className="-mx-6 overflow-x-auto pb-4 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            <div className="flex w-max gap-4 px-6">
-              {[...certificationsData, ...certificationsData, ...certificationsData].map((cert, i) => (
-                <div
-                  key={`${cert.id}-${i}`}
-                  className="min-w-[280px] md:min-w-[320px] lg:min-w-[360px] max-w-[280px] md:max-w-[320px] lg:max-w-[360px]"
-                >
-                  <CertificationCard cert={cert} />
-                </div>
-              ))}
-            </div>
+                <AnimatePresence>
+                  {activeCert === index && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ delay: 0.1 }}
+                      className="absolute inset-0 flex flex-col justify-end p-3 md:p-6 z-20 pointer-events-none"
+                    >
+                      <span className="text-[8px] md:text-xs text-terminal-green uppercase tracking-widest font-semibold mb-0.5 md:mb-1 truncate">
+                        {cert.year} — {cert.issuer}
+                      </span>
+                      <h3 className="text-[11px] sm:text-sm md:text-xl font-bold text-white mb-1 md:mb-2 line-clamp-2 md:line-clamp-2 leading-tight">
+                        {cert.title}
+                      </h3>
+                      <p className="text-xs text-white/70 line-clamp-2 md:line-clamp-3 hidden md:block">
+                        {cert.description}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <img
+                  src={cert.image}
+                  className="w-full h-full object-cover object-left"
+                  alt={cert.title}
+                />
+              </motion.div>
+            ))}
           </div>
 
-          {/* Right Arrow Button */}
-          <button
-            onClick={() => slideCarousel("right")}
-            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-background border border-terminal-dim/30 text-terminal-green opacity-0 group-hover:opacity-100 transition-all hover:bg-terminal-green/20 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] shadow-lg cursor-pointer"
-            aria-label="Next certificates"
-          >
-            <ChevronRight size={20} />
-          </button>
+          {/* Navigation Arrows placed below */}
+          <div className="flex items-center justify-center gap-6 mt-8 z-30">
+            <button
+              onClick={handlePrevCert}
+              className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background border border-terminal-dim/30 text-terminal-green transition-all hover:bg-terminal-green/20 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] shadow-lg cursor-pointer"
+              aria-label="Previous certificate"
+            >
+              <ChevronLeft size={20} className="md:w-6 md:h-6" />
+            </button>
+
+            <button
+              onClick={handleNextCert}
+              className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background border border-terminal-dim/30 text-terminal-green transition-all hover:bg-terminal-green/20 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] shadow-lg cursor-pointer"
+              aria-label="Next certificate"
+            >
+              <ChevronRight size={20} className="md:w-6 md:h-6" />
+            </button>
+          </div>
         </motion.div>
 
         {/* Achievements */}

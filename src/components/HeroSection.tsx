@@ -1,12 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Eye } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import profileImage from "@/assets/profile.png";
 import resumeFile from "@/assets/Sabarivasan_Resume.pdf";
-import BlurText from "@/components/BlurText";
 import LanyardCard from "@/components/LanyardCard";
 import ScrambledText from "@/components/ScrambledText";
 import TextType from "@/components/TextType";
+import SplitText from "@/components/SplitText";
 
 const roles = [
   "Full Stack Developer",
@@ -18,6 +18,28 @@ const roles = [
 
 const HeroSection = () => {
   const [showLanyardPopup, setShowLanyardPopup] = useState(false);
+  const [appBooted, setAppBooted] = useState(false);
+
+  useEffect(() => {
+    // If the event fired before we mounted or we just use a timeout fallback just in case
+    let timeoutId: NodeJS.Timeout;
+
+    // Some browsers might hold this state locally, fallback to 3500ms since boot takes 3000ms
+    timeoutId = setTimeout(() => {
+      setAppBooted(true);
+    }, 3500);
+
+    const handleBoot = () => {
+      setAppBooted(true);
+      clearTimeout(timeoutId);
+    };
+
+    window.addEventListener("app-booted", handleBoot);
+    return () => {
+      window.removeEventListener("app-booted", handleBoot);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const handleAnimationComplete = () => {
     console.log("Animation completed!");
@@ -52,15 +74,46 @@ const HeroSection = () => {
               <span className="text-xs text-terminal-green tracking-widest uppercase">Available for Hire</span>
             </motion.div>
 
-            <div className="mb-4">
-              <BlurText
-                text="Hi, I'm SabariVasan"
-                delay={200}
-                animateBy="words"
-                direction="top"
-                onAnimationComplete={handleAnimationComplete}
-                className="text-5xl md:text-7xl font-bold tracking-tight text-terminal-green text-glow justify-start"
-              />
+            <div className="mb-4 mt-2 hidden md:block">
+              {appBooted ? (
+                <SplitText
+                  text="Hi, I'm SabariVasan"
+                  className="text-5xl md:text-7xl font-bold tracking-tight text-terminal-green text-glow justify-start text-left"
+                  delay={60}
+                  duration={1.25}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  rootMargin="-100px"
+                  textAlign="left"
+                  onLetterAnimationComplete={handleAnimationComplete}
+                />
+              ) : (
+                <div className="h-[4rem] md:h-[6rem]" />
+              )}
+            </div>
+
+            <div className="mb-4 mt-2 md:hidden">
+              {appBooted ? (
+                <SplitText
+                  text="Hi, I'm SabariVasan"
+                  className="text-5xl font-bold tracking-tight text-terminal-green text-glow justify-start text-left"
+                  delay={60}
+                  duration={1.25}
+                  ease="power3.out"
+                  splitType="words"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  rootMargin="-10px"
+                  textAlign="left"
+                  onLetterAnimationComplete={handleAnimationComplete}
+                />
+              ) : (
+                <div className="h-[4rem]" />
+              )}
             </div>
 
             {/* Typing role */}

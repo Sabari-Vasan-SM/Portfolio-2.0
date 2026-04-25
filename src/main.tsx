@@ -141,6 +141,7 @@ const Root = () => {
     useEffect(() => {
         if (pageReady && minimumElapsed) {
             setIsBooting(false);
+            window.dispatchEvent(new Event("app-booted"));
         }
     }, [minimumElapsed, pageReady]);
 
