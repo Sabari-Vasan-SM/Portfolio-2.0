@@ -2,7 +2,8 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useMemo, useRef, useState, useEffect } from "react";
 import ScrollFloat from "@/components/ScrollFloat";
 import Stack from "@/components/Stack";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X } from "lucide-react";
+import CarouselTravelCards from "@/components/CarouselTravelCards";
 
 const certificationsData = [
   {
@@ -61,6 +62,54 @@ const certificationsData = [
     description: 'Successfully completed the Agile Fundamentals course, gaining knowledge of Agile principles, iterative workflows, and team collaboration practices.',
     image: 'https://blogger.googleusercontent.com/img/a/AVvXsEgmS4c-Tv6eNa3lFNceCtZupUFy7o-d7GDB4cok6CStdfc6A7PlEmf5er-pEz7OtQULxnp7kDKUAGZ1QQjA9-QjfxvpBHd1yebrKmWpBN9C7pGO9VvNiaKvceRHTxwgkOKLWIgiLJQlQbD0d42z_qiX8PWWfzh94XEC9EV0MyNz4WIeucEZ987Vl2Y8y0KS'
   },
+  {
+    id: 'cert-7',
+    title: 'AI Fluency: Framework & Foundations',
+    issuer: 'Anthropic',
+    year: '2026',
+    description: 'Covers the foundational concepts of AI, including how modern AI systems work, key terminology, ethical considerations, and practical frameworks for understanding and applying AI in real-world scenarios.',
+    image: 'https://blogger.googleusercontent.com/img/a/AVvXsEiM07RoGJZAWmnHB4rA1cHydq190x0Ti08l53KCTxgcYyDWcw0PZwVpJtWbv9sO3DAjQwsZRyXwizxq-ezd3BBjZGLPs4XOTDqdq9k5JY1g2vDk_BZ8_1kbNOBTyJTYEELhwrHQkbBzrlIbmvrkG2U2gKHd5FSQQXaODjjYXRN7sa0nAChq6mHDv1JlWNST',
+  },
+  {
+    id: 'cert-8',
+    title: 'Vibe Coding Camp: GitHub Copilot, Cursor, Lovable, Windsurf',
+    issuer: 'Udemy',
+    year: '2026',
+    description: 'Hands-on course exploring modern AI-powered developer tools like GitHub Copilot, Cursor, Lovable, and Windsurf to boost productivity, automate coding tasks, and improve development workflows.',
+    image: 'https://blogger.googleusercontent.com/img/a/AVvXsEgRHbBsNNDKDptUiONNA17sx0mR1LUW4mR85eOBCZH1HqJbHEcocgm4uDZsItBJ3PMKmWMLnEzWu6jvrYxBowcIqUZv0NOKhTlnMAk4vS-mOJ51PDp3bvb0BK4eWu8Z4WZE1PBM-0hQFpBFQsEqJFozTQ2usm5t8wqUMJro3Tg5tbCEsiJUqcLzIarSf1J6',
+  },
+  {
+    id: 'cert-9',
+    title: 'Introduction to Model Context Protocol',
+    issuer: 'Anthropic',
+    year: '2026',
+    description: 'Introduces the Model Context Protocol (MCP), explaining how AI systems manage context, interact with tools, and maintain structured communication between models and external systems.',
+    image: 'https://blogger.googleusercontent.com/img/a/AVvXsEgoNT2YYp3gGq5aUW8PVck3JQJvv_f8f8h9cjXzr-4ncW746gNZDXwbqz4uwE20fjgghPO_t6qjsA0DrbMF5PFItWhDs7jOp0sV-XUZWBxKHnXb7aeAkprdj70SFUI7-gdmap8I5YuJK4AyDYhivk0f7Hd0TgkxcVntutS_DCDDoJPmIRJ3kHOpFhsC3bs9',
+  },
+  {
+    id: 'cert-10',
+    title: 'AI Fluency for Students',
+    issuer: 'Anthropic',
+    year: '2026',
+    description: 'Designed for students to understand AI basics, practical usage, and responsible adoption. Focuses on real-world applications, productivity, and foundational AI literacy.',
+    image: 'https://blogger.googleusercontent.com/img/a/AVvXsEgRKiG5TaUcYvwJA2e_1giTogUFjSQgJQTi8cR9ldVVHhn6mgUKh_8H3zni83u80D_JLTPm4XgdII8Y5r61T3FvANd1Yl80_lQw860XPmW2QxmBdWRZyAUu93YFcxu1wz28_X06IoPVcmHi92UxtKD26old-EWHebKb2YdFo-HaUwbyKp1fLF6MS-XSVLsN',
+  },
+  {
+    id: 'cert-11',
+    title: 'Flutter Masterclass - Your Complete Guide to App Development',
+    issuer: 'Udemy',
+    year: '2026',
+    description: 'Comprehensive Flutter course covering UI development, state management, API integration, and building cross-platform mobile applications with production-ready practices.',
+    image: 'https://blogger.googleusercontent.com/img/a/AVvXsEh7Vm_wy5UlR5ug0mBSQVude9DI2CaMjg9DIIDdFVMhECM57-SfGWNdvZVGklEKgoKJcwl3iDL02DU-JGCCYle_8rMqdsyEOBZCvCLF7KkEwsAkUjMB79Z1g_n4xvFNW0rSH4jpmEcdjWBuuG2wobe_7tMPTt7zG5Gph_MBzCQttkSHUWN31xujUohbrMIH',
+  },
+  {
+    id: 'cert-12',
+    title: 'AI Fluency for Students',
+    issuer: 'Anthropic',
+    year: '2026',
+    description: 'A structured introduction to AI concepts tailored for learners, focusing on practical understanding, safe usage, and how AI tools can enhance learning and productivity.',
+    image: 'https://blogger.googleusercontent.com/img/a/AVvXsEjQm0XPF2BI06cOKh5FpQaGf0kPn6sIm4_RlOyYU15zPPmf_wnanFWk1DxIYW6eoaroiOqTAYqinOr5KFV865GlqrUdgXS1BAkT3iQ6xZfxZn8JGLXbdwhx-AZW6dbfz9S-DvSN2vDHkveiaVTCAXL1BpWuIPkr7HIPlepestrFQx4THSsW0fd21N88Eedv',
+  },
 ];
 
 const achievements = [
@@ -98,7 +147,6 @@ const CertificationsSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [activeCert, setActiveCert] = useState<number | null>(0);
 
   useEffect(() => {
     if (selectedImage) {
@@ -112,17 +160,18 @@ const CertificationsSection = () => {
     };
   }, [selectedImage]);
 
-  const handleNextCert = () => {
-    if (activeCert !== null) {
-      setActiveCert((prev) => (prev! + 1) % certificationsData.length);
-    }
-  };
-
-  const handlePrevCert = () => {
-    if (activeCert !== null) {
-      setActiveCert((prev) => (prev! - 1 + certificationsData.length) % certificationsData.length);
-    }
-  };
+  const certificationCards = useMemo(
+    () =>
+      certificationsData.map((cert) => ({
+        id: cert.id,
+        title: cert.title,
+        issuer: cert.issuer,
+        year: cert.year,
+        image: cert.image,
+        description: cert.description,
+      })),
+    [],
+  );
 
   const achievementCards = useMemo(
     () =>
@@ -185,81 +234,9 @@ const CertificationsSection = () => {
           initial={{ opacity: 0, y: 18 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.08 }}
-          className="mb-20 w-full flex flex-col justify-center items-center py-4 relative group"
+          className="mb-20 w-full"
         >
-          <div className="flex w-full max-w-5xl items-center justify-center gap-1.5 md:gap-3 h-[24rem] md:h-[30rem] px-2 md:px-0">
-            {certificationsData.map((cert, index) => (
-              <motion.div
-                key={cert.id}
-                className="relative cursor-pointer overflow-hidden rounded-xl md:rounded-3xl border border-terminal-dim/30 hover:border-terminal-green/50 hover:shadow-lg hover:shadow-terminal-green/20 flex-shrink-0"
-                initial={{ width: "3.5rem" }}
-                animate={{
-                  width: activeCert === index ? (typeof window !== 'undefined' && window.innerWidth < 768 ? "80vw" : "32rem") : (typeof window !== 'undefined' && window.innerWidth < 768 ? "4vw" : "4.5rem"),
-                }}
-                transition={{ duration: 0.4, ease: "anticipate" }}
-                onClick={() => setActiveCert(index)}
-                onHoverStart={() => setActiveCert(index)}
-              >
-                <AnimatePresence>
-                  {activeCert === index && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 pointer-events-none"
-                    />
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence>
-                  {activeCert === index && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ delay: 0.1 }}
-                      className="absolute inset-0 flex flex-col justify-end p-3 md:p-6 z-20 pointer-events-none"
-                    >
-                      <span className="text-[8px] md:text-xs text-terminal-green uppercase tracking-widest font-semibold mb-0.5 md:mb-1 truncate">
-                        {cert.year} — {cert.issuer}
-                      </span>
-                      <h3 className="text-[11px] sm:text-sm md:text-xl font-bold text-white mb-1 md:mb-2 line-clamp-2 md:line-clamp-2 leading-tight">
-                        {cert.title}
-                      </h3>
-                      <p className="text-xs text-white/70 line-clamp-2 md:line-clamp-3 hidden md:block">
-                        {cert.description}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <img
-                  src={cert.image}
-                  className="w-full h-full object-cover object-left"
-                  alt={cert.title}
-                />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Navigation Arrows placed below */}
-          <div className="flex items-center justify-center gap-6 mt-8 z-30">
-            <button
-              onClick={handlePrevCert}
-              className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background border border-terminal-dim/30 text-terminal-green transition-all hover:bg-terminal-green/20 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] shadow-lg cursor-pointer"
-              aria-label="Previous certificate"
-            >
-              <ChevronLeft size={20} className="md:w-6 md:h-6" />
-            </button>
-
-            <button
-              onClick={handleNextCert}
-              className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background border border-terminal-dim/30 text-terminal-green transition-all hover:bg-terminal-green/20 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] shadow-lg cursor-pointer"
-              aria-label="Next certificate"
-            >
-              <ChevronRight size={20} className="md:w-6 md:h-6" />
-            </button>
-          </div>
+          <CarouselTravelCards items={certificationCards} accentColor="#6b7280" />
         </motion.div>
 
         {/* Achievements */}
