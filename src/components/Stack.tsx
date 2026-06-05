@@ -58,6 +58,7 @@ interface StackProps {
     pauseOnHover?: boolean;
     mobileClickOnly?: boolean;
     mobileBreakpoint?: number;
+    onAllCardsViewed?: () => void;
 }
 
 export default function Stack({
@@ -71,9 +72,12 @@ export default function Stack({
     pauseOnHover = false,
     mobileClickOnly = false,
     mobileBreakpoint = 768,
+    onAllCardsViewed,
 }: StackProps) {
     const [isMobile, setIsMobile] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
+    const [swipeCount, setSwipeCount] = useState(0);
+    const [hasTriggeredAllViewed, setHasTriggeredAllViewed] = useState(false);
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < mobileBreakpoint);
@@ -94,6 +98,8 @@ export default function Stack({
 
     useEffect(() => {
         setStack(initialCards);
+        setSwipeCount(0);
+        setHasTriggeredAllViewed(false);
     }, [initialCards]);
 
     const sendToBack = (id: number) => {
@@ -103,6 +109,17 @@ export default function Stack({
             const [card] = newStack.splice(index, 1);
             newStack.unshift(card);
             return newStack;
+        });
+
+        setSwipeCount((prev) => {
+            const next = prev + 1;
+            if (next >= cards.length && !hasTriggeredAllViewed) {
+                setHasTriggeredAllViewed(true);
+                if (onAllCardsViewed) {
+                    onAllCardsViewed();
+                }
+            }
+            return next;
         });
     };
 

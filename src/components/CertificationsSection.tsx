@@ -160,6 +160,14 @@ const CertificationsSection = () => {
     };
   }, [selectedImage]);
 
+  const handleAllCardsViewed = () => {
+    if (window.innerWidth < 768) {
+      setTimeout(() => {
+        document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" });
+      }, 600);
+    }
+  };
+
   const certificationCards = useMemo(
     () =>
       certificationsData.map((cert) => ({
@@ -270,6 +278,7 @@ const CertificationsSection = () => {
             autoplay={false}
             autoplayDelay={3000}
             pauseOnHover={false}
+            onAllCardsViewed={handleAllCardsViewed}
           />
         </motion.div>
 
