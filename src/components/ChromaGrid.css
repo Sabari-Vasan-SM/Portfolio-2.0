@@ -14,7 +14,6 @@
     padding: 0.25rem 0 1rem;
     scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain;
-    touch-action: pan-x;
     -webkit-overflow-scrolling: touch;
     --x: 50%;
     --y: 50%;

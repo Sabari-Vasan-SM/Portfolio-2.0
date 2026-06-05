@@ -111,7 +111,10 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
     useEffect(() => {
         const el = rootRef.current;
         if (!el) return;
-        isCoarsePointerRef.current = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+        isCoarsePointerRef.current =
+            window.matchMedia("(hover: none), (pointer: coarse)").matches ||
+            ("ontouchstart" in window) ||
+            (navigator.maxTouchPoints > 0);
         setX.current = gsap.quickSetter(el, "--x", "px") as SetterFn;
         setY.current = gsap.quickSetter(el, "--y", "px") as SetterFn;
         const { width, height } = el.getBoundingClientRect();
