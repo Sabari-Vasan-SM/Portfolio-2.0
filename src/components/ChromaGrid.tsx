@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./ChromaGrid.css";
 
 export interface ChromaItem {
@@ -206,8 +207,36 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
         card.style.setProperty("--mouse-y", `${y}px`);
     };
 
+    const scroll = (direction: "left" | "right") => {
+        if (rootRef.current) {
+            const firstCard = rootRef.current.querySelector(".chroma-card");
+            const cardWidth = firstCard ? firstCard.clientWidth : 320;
+            const gap = 16; // 1rem
+            const scrollAmount = cardWidth + gap;
+            rootRef.current.scrollBy({
+                left: direction === "left" ? -scrollAmount : scrollAmount,
+                behavior: "smooth",
+            });
+        }
+    };
+
     return (
         <div className={`chroma-shell ${className}`.trim()}>
+            <button
+                type="button"
+                className="chroma-nav chroma-nav--left"
+                onClick={() => scroll("left")}
+                onMouseEnter={() => {
+                    isPausedRef.current = true;
+                }}
+                onMouseLeave={() => {
+                    isPausedRef.current = false;
+                }}
+                aria-label="Previous projects"
+            >
+                <ChevronLeft size={20} />
+            </button>
+
             <div
                 ref={rootRef}
                 className="chroma-grid"
@@ -252,6 +281,21 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
                 <div className="chroma-overlay" />
                 <div ref={fadeRef} className="chroma-fade" />
             </div>
+
+            <button
+                type="button"
+                className="chroma-nav chroma-nav--right"
+                onClick={() => scroll("right")}
+                onMouseEnter={() => {
+                    isPausedRef.current = true;
+                }}
+                onMouseLeave={() => {
+                    isPausedRef.current = false;
+                }}
+                aria-label="Next projects"
+            >
+                <ChevronRight size={20} />
+            </button>
         </div>
     );
 };

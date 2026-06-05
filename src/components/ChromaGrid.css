@@ -38,6 +38,8 @@
     color: hsl(0 0% 96%);
     transform: translateY(-50%);
     backdrop-filter: blur(8px);
+    opacity: 1;
+    pointer-events: auto;
     transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
 }
 
@@ -48,11 +50,26 @@
 }
 
 .chroma-nav--left {
-    left: 0.35rem;
+    left: -1.25rem;
 }
 
 .chroma-nav--right {
-    right: 0.35rem;
+    right: -1.25rem;
+}
+
+@media (min-width: 1140px) {
+    .chroma-nav--left {
+        left: -3.5rem;
+    }
+    .chroma-nav--right {
+        right: -3.5rem;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .chroma-nav {
+        display: none !important;
+    }
 }
 
 .chroma-grid::-webkit-scrollbar {
