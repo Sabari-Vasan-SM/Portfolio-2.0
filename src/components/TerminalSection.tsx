@@ -35,7 +35,7 @@ const commandResponses: Record<string, string> = {
   07. Gear Fault Detection — YOLOv8 CV system
   08. Admission Management — Student enrollment`,
   experience: `> Professional Experience:
-  ● Software Developer @ Harvee Designs (Current)
+  ● Full Stack Developer @ Harvee Technologies (Current)
   ● Web Developer Intern @ InternPe (1 month)
   ● IoT Intern @ Nxt Gen Instruments (1 month)`,
   education: `> Education:

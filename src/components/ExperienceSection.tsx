@@ -3,7 +3,7 @@ import { useRef } from "react";
 import ScrollFloat from "@/components/ScrollFloat";
 
 const experiences = [
-  { role: "Software Developer", company: "Harvee Designs", location: "Coimbatore", duration: "Currently", type: "Full Time" },
+  { role: "Full Stack Developer", company: "Harvee Technologies", location: "Coimbatore", duration: "Currently", type: "Full Time" },
   { role: "Web Developer Intern", company: "InternPe", location: "Remote", duration: "1 Month", type: "Internship" },
   { role: "Internet Of Things", company: "Nxt Gen Instruments", location: "Erode", duration: "1 Month", type: "Internship" },
 ];
