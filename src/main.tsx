@@ -1,154 +1,152 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import introVideo from "./assets/intro.mp4";
 
-const MIN_BOOT_DURATION = 3000;
+const CountdownButton = ({ onComplete }: { onComplete: () => void }) => {
+    const [timeLeft, setTimeLeft] = useState(3);
 
-const BootLoader = ({ progress }: { progress: number }) => {
+    useEffect(() => {
+        if (timeLeft <= 0) {
+            onComplete();
+            return;
+        }
+        
+        const timer = setTimeout(() => {
+            setTimeLeft(prev => prev - 1);
+        }, 1000);
+        
+        return () => clearTimeout(timer);
+    }, [timeLeft, onComplete]);
+
+    return (
+        <motion.button
+            onClick={(e) => {
+                e.stopPropagation();
+                onComplete();
+            }}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="group relative overflow-hidden rounded-xl border border-white/20 bg-white/10 px-8 py-4 font-mono text-xl tracking-[0.2em] text-white backdrop-blur-md transition-colors hover:bg-white/20 uppercase"
+        >
+            <span className="relative z-10 flex items-center gap-3">
+                Open Site 
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-sm font-bold">{timeLeft}</span>
+            </span>
+            <motion.div 
+                className="absolute left-0 top-0 bottom-0 z-0 bg-white/20"
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 3, ease: "linear" }}
+            />
+        </motion.button>
+    );
+};
+
+const VideoIntro = ({ onComplete }: { onComplete: () => void }) => {
+    const [videoEnded, setVideoEnded] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.muted = false;
+            videoRef.current.play().catch(() => {
+                setIsPaused(true);
+            });
+        }
+    }, []);
+
+    const handleScreenClick = () => {
+        if (videoRef.current && videoRef.current.paused) {
+            videoRef.current.play().then(() => {
+                setIsPaused(false);
+            }).catch(() => {});
+        }
+    };
+
     return (
         <motion.div
-            aria-live="polite"
-            className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-background"
+            onClick={handleScreenClick}
+            className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black cursor-default"
             initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
         >
-            <div className="absolute inset-0 scanline opacity-60" />
-            <div className="absolute inset-0 noise-bg opacity-80" />
+            <video
+                ref={videoRef}
+                src={introVideo}
+                playsInline
+                onEnded={() => setVideoEnded(true)}
+                className="absolute inset-0 h-full w-full object-cover"
+            />
 
-            <div className="absolute left-4 top-4 max-w-[min(92vw,420px)] font-mono text-[clamp(0.46rem,0.95vw,0.72rem)] leading-relaxed tracking-[0.14em] text-[#d6d6d6] sm:left-6 sm:top-6 md:max-w-[460px]">
-                <div className="space-y-2">
-                    {[
-                        ">01  INITIALIZING NEURAL NET ...",
-                        ">02  LOADING PROTOCOL: GHOST",
-                        ">03  MEMORY CHECK: 128PB OK",
-                        ">04  SECURITY: BYPASSED",
-                        ">05  LOCATING TARGET ...",
-                        ">06  TARGET LOCKED",
-                        ">07  MODE: STEALTH",
-                        ">08  ACCESS GRANTED // ENTER",
-                    ].map((line, index) => (
+            {!videoEnded && (
+                <div className="absolute top-6 right-6 sm:top-10 sm:right-10 z-20 flex items-center pointer-events-none">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onComplete();
+                        }}
+                        className="pointer-events-auto rounded-full border border-white/20 bg-black/40 px-6 py-2 font-mono text-sm tracking-wider text-white/80 backdrop-blur-md transition-colors hover:bg-white/20 hover:text-white uppercase"
+                    >
+                        Skip Intro
+                    </button>
+                </div>
+            )}
+
+            <AnimatePresence>
+                {isPaused && !videoEnded && (
+                    <motion.div
+                        className="absolute inset-x-0 bottom-16 z-10 flex justify-center pointer-events-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
                         <motion.p
-                            key={line}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.35, delay: 0.15 + index * 0.08, ease: "easeOut" }}
-                            className="whitespace-pre text-shadow-[0_0_6px_rgba(255,255,255,0.14)]"
+                            animate={{ opacity: [0.4, 1, 0.4] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            className="rounded-full bg-black/60 px-6 py-3 font-mono text-sm tracking-[0.2em] text-white/90 backdrop-blur-md border border-white/10 uppercase text-center"
                         >
-                            <span className="text-[#7a7a7a]">&gt;</span>
-                            <span className="text-[#9f9f9f]">{String(index + 1).padStart(2, "0")}</span>
-                            <span className="ml-3 sm:ml-4">{line.slice(4)}</span>
+                            Click anywhere to continue
                         </motion.p>
-                    ))}
-                </div>
-                <div className="mt-4 flex items-center gap-3">
-                    <div className="h-0.5 flex-1 overflow-hidden bg-white/10">
-                        <motion.div
-                            className="h-full bg-white/75"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${progress}%` }}
-                            transition={{ duration: 0.12, ease: "linear" }}
-                        />
-                    </div>
-                    <span className="min-w-10 text-right text-[0.62rem] tracking-[0.22em] text-white/70">{Math.round(progress)}%</span>
-                </div>
-            </div>
-
-            <motion.div
-                className="relative w-full max-w-md px-6 text-center"
-                initial={{ y: 16, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-            >
-                <div className="mb-8 inline-flex items-center gap-3 terminal-border bg-card/70 px-5 py-3 text-xs uppercase tracking-[0.35em] text-terminal-green backdrop-blur-sm">
-                    <span className="h-2.5 w-2.5 rounded-full bg-terminal-green shadow-[0_0_12px_hsl(0_0%_100%_/_0.35)] animate-pulse" />
-                    Booting portfolio
-                </div>
-
-                <div className="terminal-border bg-black/40 p-6 backdrop-blur-sm">
-                    <p className="mb-2 text-xs tracking-[0.4em] text-terminal-dim">LOADING EXPERIENCE</p>
-                    <p className="text-2xl font-bold text-terminal-green text-glow">SabariVasan</p>
-                    <p className="mt-3 text-sm text-terminal-cyan">Preparing interface, assets, and interactions...</p>
-
-                    <div className="mt-6 flex items-center justify-center gap-2">
-                        {[0, 1, 2, 3].map((index) => (
-                            <motion.span
-                                key={index}
-                                className="h-2.5 w-8 border border-terminal-green/40 bg-terminal-green/10"
-                                animate={{ opacity: [0.25, 1, 0.25], scaleY: [0.85, 1.15, 0.85] }}
-                                transition={{
-                                    duration: 1,
-                                    repeat: Infinity,
-                                    ease: "easeInOut",
-                                    delay: index * 0.15,
-                                }}
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                <p className="mt-4 text-[0.7rem] tracking-[0.3em] text-terminal-dim">PLEASE WAIT</p>
-            </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            
+            <AnimatePresence>
+                {videoEnded && (
+                    <motion.div
+                        className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <CountdownButton onComplete={onComplete} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 };
 
 const Root = () => {
     const [isBooting, setIsBooting] = useState(true);
-    const [progress, setProgress] = useState(0);
-    const [pageReady, setPageReady] = useState(document.readyState === "complete");
-    const [minimumElapsed, setMinimumElapsed] = useState(false);
 
-    useEffect(() => {
-        const startTime = window.performance.now();
-        let frameId = 0;
-
-        const updateProgress = () => {
-            const elapsed = window.performance.now() - startTime;
-            const nextProgress = Math.min(100, (elapsed / MIN_BOOT_DURATION) * 100);
-            setProgress(nextProgress);
-
-            if (elapsed >= MIN_BOOT_DURATION) {
-                setMinimumElapsed(true);
-                setProgress(100);
-                return;
-            }
-
-            frameId = window.requestAnimationFrame(updateProgress);
-        };
-
-        frameId = window.requestAnimationFrame(updateProgress);
-
-        const onLoad = () => {
-            setPageReady(true);
-        };
-
-        if (document.readyState === "complete") {
-            setPageReady(true);
-        } else {
-            window.addEventListener("load", onLoad);
-        }
-
-        return () => {
-            window.cancelAnimationFrame(frameId);
-            window.removeEventListener("load", onLoad);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (pageReady && minimumElapsed) {
-            setIsBooting(false);
-            window.dispatchEvent(new Event("app-booted"));
-        }
-    }, [minimumElapsed, pageReady]);
+    const handleIntroComplete = () => {
+        setIsBooting(false);
+        window.dispatchEvent(new Event("app-booted"));
+    };
 
     return (
         <>
-            <AnimatePresence>{isBooting && <BootLoader progress={progress} />}</AnimatePresence>
-            <div className={isBooting ? "pointer-events-none opacity-0" : "opacity-100 transition-opacity duration-300"}>
+            <AnimatePresence>{isBooting && <VideoIntro onComplete={handleIntroComplete} />}</AnimatePresence>
+            <div className={isBooting ? "pointer-events-none fixed inset-0 opacity-0 overflow-hidden" : "opacity-100 transition-opacity duration-1000"}>
                 <App />
             </div>
         </>
