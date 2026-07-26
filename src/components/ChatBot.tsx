@@ -7,8 +7,8 @@ type Msg = { role: "user" | "bot"; text: string };
 const botResponses: Record<string, string> = {
   hi: "Hey! I'm Sabari's assistant. Ask me about skills, projects, experience, education, social links, or contact.",
   hello: "Hello! I can help you explore Sabari's portfolio. Try: skills, projects, experience, education, social, or contact.",
-  skills: "Sabari works with React, Next.js, TypeScript, Node.js, Express, MongoDB, Docker, AWS, and modern DevOps workflows.",
-  projects: "Sabari has built 8 featured projects including Bike Buddy, Billventory, Air Quality Monitor (IoT), Password Saver, and a YOLOv8 gear fault detection system.",
+  skills: "Sabari works with React, Next.js, Flutter, TypeScript, Node.js, Express, MongoDB, Docker, AWS, and modern DevOps workflows.",
+  projects: "Sabari has built 11 featured projects including Gloss (Salon Management System for iOS, Android & Web), E-Commerce Customer Retention CRM, vasX UI (Flutter package on pub.dev), Bike Buddy, Billventory, Air Quality Monitor (IoT), Password Saver, and a YOLOv8 gear fault detection system.",
   contact: "Reach Sabari at sabarivasan1239@gmail.com or +91 9677465071. Location: Erode, Tamil Nadu, India.",
   social: "GitHub: https://github.com/Sabari-Vasan-SM | LinkedIn: https://www.linkedin.com/in/sabarivasan-s-m-b10229255/",
   experience: "Sabari is currently a Software Developer at Harvee Designs and previously interned at InternPe and Nxt Gen Instruments.",

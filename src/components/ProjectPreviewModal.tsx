@@ -13,7 +13,8 @@ interface ProjectPreviewModalProps {
         technologies: string[];
         features: string[];
         link: string;
-        github: string;
+        appLink?: string;
+        github?: string;
         category: string;
     } | null;
 }
@@ -126,25 +127,40 @@ const ProjectPreviewModal: React.FC<ProjectPreviewModalProps> = ({ isOpen, onClo
                                 )}
 
                                 {/* Action Buttons */}
-                                <div className="flex gap-3 pt-4">
-                                    <a
-                                        href={project.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-terminal-green/20 hover:bg-terminal-green/30 text-terminal-green rounded-lg transition-colors font-medium text-sm md:text-base"
-                                    >
-                                        <ExternalLink size={16} />
-                                        Visit Live Project
-                                    </a>
-                                    <a
-                                        href={project.github}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-terminal-dim/20 hover:bg-terminal-dim/40 text-terminal-dim rounded-lg transition-colors font-medium text-sm md:text-base"
-                                    >
-                                        <Github size={16} />
-                                        View Code
-                                    </a>
+                                <div className="flex gap-3 pt-4 flex-wrap">
+                                    {project.link && project.link !== "#" && (
+                                        <a
+                                            href={project.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 bg-terminal-green/20 hover:bg-terminal-green/30 text-terminal-green rounded-lg transition-colors font-medium text-sm md:text-base"
+                                        >
+                                            <ExternalLink size={16} />
+                                            {project.appLink ? "Launch Site" : "Visit Project"}
+                                        </a>
+                                    )}
+                                    {project.appLink && project.appLink !== "#" && (
+                                        <a
+                                            href={project.appLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded-lg transition-colors font-medium text-sm md:text-base"
+                                        >
+                                            <ExternalLink size={16} />
+                                            Admin App
+                                        </a>
+                                    )}
+                                    {project.github && project.github !== "#" && project.github.trim() !== "" && (
+                                        <a
+                                            href={project.github}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 bg-terminal-dim/20 hover:bg-terminal-dim/40 text-terminal-dim rounded-lg transition-colors font-medium text-sm md:text-base"
+                                        >
+                                            <Github size={16} />
+                                            View Code
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </div>

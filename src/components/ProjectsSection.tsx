@@ -6,6 +6,69 @@ import ScrollFloat from "@/components/ScrollFloat";
 
 const projects = [
   {
+    title: "Gloss Salon Management System",
+    description:
+      "Appointments, Billing, CRM, Inventory, Staff & Analytics — all in one beautifully simple platform for solo studios and multi-location salon chains.",
+    fullDescription:
+      "Gloss is an all-in-one salon management platform spanning Appointments, Billing, CRM, Inventory, Staff Scheduling & Analytics. Designed to replace slow and clunky legacy salon software, Gloss runs natively on iOS, Android, and Web browsers with modern speed and simplicity. It scales seamlessly from solo studios up to 50-location enterprise chains.",
+    image: "https://blogger.googleusercontent.com/img/a/AVvXsEg6PWDOjEzAI43I-ophPjPS2uAW7oJasb8yYtdzmfQZ1xEcEmWYt349Pnhk0PXcqraABj2GP5qmE05KeTTz5NMVKQYp6Pf3TK54U_eNQKuD7rm5tqS7r9gC7lH11LNj6e6nAOXUe0I1LH88k42bnaMYJycCE--yyUnMveNoLzMcoAz1of878uzbJtb0XFOS",
+    link: "https://gloss.propelbees.com/",
+    appLink: "https://admingloss.propelbees.com/",
+    technologies: ["React", "React Native", "iOS", "Android", "Node.js", "Analytics"],
+    features: [
+      "Appointments & Smart Calendar Scheduling",
+      "Point-of-Sale Billing & Transaction Management",
+      "Customer Relationship Management (CRM) & Loyalty",
+      "Inventory & Retail Product Stock Tracking",
+      "Staff Scheduling, Attendance & Commission Tracking",
+      "Real-time Analytics & Business Performance Metrics",
+      "Cross-Platform Support (Native iOS, Android & Web browsers)",
+    ],
+    category: "Cross-Platform Platform (iOS, Android & Web)",
+  },
+  {
+    title: "E-Commerce Customer Retention CRM",
+    description:
+      "A client CRM platform designed to help e-commerce store owners regain churned customers through journey analytics and behavioral tracking across Web & Android.",
+    fullDescription:
+      "An end-to-end client CRM suite for Android & Web built to help e-commerce store owners regain lost customers. Features include store owner and admin authentication, multi-store overview dashboards, revenue and sales timeline analysis, customer segmentation, sales funnels, user behavior tracking, interactive session journey flowcharts, and granular role-based access control.",
+    image: "https://blogger.googleusercontent.com/img/a/AVvXsEjYg-DHiaCIr8odEquukdWGM-Y5m2BDMmRfC4tnQHDquqGWQcjr4RWGAXA7BvwEYyF36weKffhFVhVinC5ui_4pNxOTFPpxJH6jIPnlCSR2Aft32qC7hK98N6W9kYw6lKMcflI9L-G2OScTYUxvyyG8e2S7MhK_EXPlAHMy8jK2W1w6dZ60GqVGE_CRKPDA",
+    link: "https://iq.propelbees.com/",
+    technologies: ["React", "Android", "Node.js", "Analytics", "CRM", "Chart.js"],
+    features: [
+      "auth/ - Store owner & admin authentication portal",
+      "admin/ - Admin portal for multi-store management",
+      "dashboard/ - Overview KPIs, revenue, visitor trends & location breakdown",
+      "sales/ - Revenue timeline, product performance & category analysis",
+      "customers/ - Customer segments, device breakdown & activity logs",
+      "funnel/ & behavior/ - Sales funnel conversion & user behavior patterns",
+      "journey/ - Interactive user journey flowchart with session timelines",
+      "settings/ & users/ - Store configuration & role-based permissions (RBAC)",
+    ],
+    category: "Client Project (Web & Android)",
+  },
+  {
+    title: "vasX UI",
+    description:
+      "A comprehensive collection of beautiful, reusable Flutter widgets built for production-grade applications.",
+    fullDescription:
+      "vasX UI is an extensively crafted UI library for Flutter. Instead of rewriting common complex UI components like multi-step wizards, searchable dropdowns, and customizable tables, vasx_ui provides highly polished, fully customizable, and deeply integrated widgets that you can plug directly into your production apps. It follows modern design principles out of the box with fluid animations, adaptive layouts, and a cohesive color system.",
+    image: "/vasx_ui_banner.png",
+    link: "https://pub.dev/packages/vasx_ui",
+    github: "https://github.com/Sabari-Vasan-SM/vasX-UI.git",
+    technologies: ["Flutter", "Dart", "Pub.dev", "UI Library", "Widgets"],
+    features: [
+      "AppPopupMenu - Modern contextual popup menus",
+      "CustomTable - Advanced data table with sorting & styling",
+      "Vertical & Scrollable WizardShell - Multi-step process flows",
+      "SearchableDropdown & MultiSelectSearchableDropdown",
+      "CreatableDropdown - Dynamic option addition",
+      "DropdownDatePicker & CustomDateRangePickerDialog",
+      "Fluid animations and adaptive layout system",
+    ],
+    category: "Flutter Package",
+  },
+  {
     title: "Bike Buddy",
     description:
       "A comprehensive bike service management platform that connects customers with service providers, enabling easy booking, tracking, and management of bike services.",

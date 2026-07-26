@@ -18,13 +18,13 @@ const LanyardCard = () => {
             >
                 <div className="lanyard-card-top">
                     <div>
-                        <span className="lanyard-brand">Harvee Technologies</span>
+                        <span className="lanyard-brand">Harvee Designs</span>
                         <span className="lanyard-subtitle">Current Role</span>
                     </div>
                 </div>
 
                 <div className="lanyard-card-body">
-                    <img src={companyLogoUrl} alt="Harvee Technologies logo" className="lanyard-company-logo" loading="lazy" />
+                    <img src={companyLogoUrl} alt="Harvee Designs logo" className="lanyard-company-logo" loading="lazy" />
                     <h3>Full Stack Developer</h3>
                     <p className="lanyard-team">SaaS Product Team</p>
                     <p className="lanyard-description">

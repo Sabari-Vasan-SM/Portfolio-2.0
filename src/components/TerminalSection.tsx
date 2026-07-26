@@ -20,22 +20,25 @@ const commandResponses: Record<string, string> = {
   Location: Erode, Tamil Nadu, India
   Status: Open to full-time opportunities`,
   skills: `> Technical Skills:
-  Frontend:  React, Next.js, TypeScript, Tailwind CSS
+  Frontend/Mobile: Flutter, React, Next.js, TypeScript, Tailwind CSS
   Backend:   Node.js, Express, FastAPI, Python
   Database:  MongoDB, PostgreSQL, Supabase
   DevOps:    Docker, Jenkins, GitHub Actions
   Cloud:     AWS, Vercel, Netlify, Render`,
-  projects: `> 8 Featured Projects:
-  01. Bike Buddy — Bike service platform
-  02. Password Saver — React Native password manager
-  03. Air Quality Monitor — IoT dashboard
-  04. Billventory — Retail management
-  05. E-Learning Platform — Online courses
-  06. Sport-Connect — Sports social network
-  07. Gear Fault Detection — YOLOv8 CV system
-  08. Admission Management — Student enrollment`,
+  projects: `> 11 Featured Projects:
+  01. Gloss — Salon Management System (iOS, Android & Web)
+  02. Customer Retention CRM — E-Commerce CRM Platform (Web & Android)
+  03. vasX UI — Flutter Widget Package (pub.dev)
+  04. Bike Buddy — Bike service platform
+  05. Password Saver — React Native password manager
+  06. Air Quality Monitor — IoT dashboard
+  07. Billventory — Retail management
+  08. E-Learning Platform — Online courses
+  09. Sport-Connect — Sports social network
+  10. Gear Fault Detection — YOLOv8 CV system
+  11. Admission Management — Student enrollment`,
   experience: `> Professional Experience:
-  ● Full Stack Developer @ Harvee Technologies (Current)
+  ● Full Stack Developer @ Harvee Designs (Current)
   ● Web Developer Intern @ InternPe (1 month)
   ● IoT Intern @ Nxt Gen Instruments (1 month)`,
   education: `> Education:

@@ -199,15 +199,15 @@ const SkillsSection = () => {
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
             <div>
               <span className="text-muted-foreground">Device:</span>
-              <p className="text-foreground mt-1">Acer Aspire Lite</p>
+              <p className="text-foreground mt-1">MacBook Air M5, Acer Aspire Lite</p>
             </div>
             <div>
               <span className="text-muted-foreground">Processor:</span>
-              <p className="text-foreground mt-1">Intel Core i5 (Iris Xe)</p>
+              <p className="text-foreground mt-1">Apple M5 / Intel Core i5 (Iris Xe)</p>
             </div>
             <div>
               <span className="text-muted-foreground">OS:</span>
-              <p className="text-foreground mt-1">Windows 11 / Ubuntu 25.10</p>
+              <p className="text-foreground mt-1">macOS / Windows 11 / Ubuntu 25.10</p>
             </div>
             <div>
               <span className="text-muted-foreground">Editors:</span>
