@@ -122,14 +122,18 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
         setX.current(pos.current.x);
         setY.current(pos.current.y);
 
+        let maxScrollLeft = Math.max(0, el.scrollWidth - el.clientWidth);
+        const updateMetrics = () => {
+            maxScrollLeft = Math.max(0, el.scrollWidth - el.clientWidth);
+        };
+        const ro = new ResizeObserver(updateMetrics);
+        ro.observe(el);
+
         const autoScroll = () => {
-            if (!isPausedRef.current && !isCoarsePointerRef.current) {
-                const maxScrollLeft = el.scrollWidth - el.clientWidth;
-                if (maxScrollLeft > 0) {
-                    el.scrollLeft += 0.35;
-                    if (el.scrollLeft >= maxScrollLeft - 1) {
-                        el.scrollLeft = 0;
-                    }
+            if (!isPausedRef.current && !isCoarsePointerRef.current && maxScrollLeft > 0) {
+                el.scrollLeft += 0.35;
+                if (el.scrollLeft >= maxScrollLeft - 1) {
+                    el.scrollLeft = 0;
                 }
             }
 
@@ -139,6 +143,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
         rafRef.current = window.requestAnimationFrame(autoScroll);
 
         return () => {
+            ro.disconnect();
             if (rafRef.current) {
                 window.cancelAnimationFrame(rafRef.current);
             }
@@ -271,7 +276,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
                         }
                     >
                         <div className="chroma-img-wrapper">
-                            <img src={c.image} alt={c.title} loading="lazy" />
+                            <img src={c.image} alt={c.title} loading="lazy" decoding="async" />
                         </div>
                         <footer className="chroma-info">
                             <h3 className="name">{c.title}</h3>

@@ -48,32 +48,45 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
             });
         });
 
-        const handleMove = (e: PointerEvent) => {
-            charsRef.current.forEach((charEl) => {
+        let charCenters: { el: HTMLElement; x: number; y: number }[] = [];
+        const measureChars = () => {
+            charCenters = charsRef.current.map((charEl) => {
                 const { left, top, width, height } = charEl.getBoundingClientRect();
-                const dx = e.clientX - (left + width / 2);
-                const dy = e.clientY - (top + height / 2);
+                return { el: charEl, x: left + width / 2, y: top + height / 2 };
+            });
+        };
+        measureChars();
+        window.addEventListener("resize", measureChars, { passive: true });
+
+        const handleMove = (e: PointerEvent) => {
+            const px = e.clientX;
+            const py = e.clientY;
+            for (let i = 0; i < charCenters.length; i++) {
+                const item = charCenters[i];
+                const dx = px - item.x;
+                const dy = py - item.y;
                 const dist = Math.hypot(dx, dy);
 
                 if (dist < radius) {
-                    gsap.to(charEl, {
+                    gsap.to(item.el, {
                         overwrite: true,
                         duration: duration * (1 - dist / radius),
                         scrambleText: {
-                            text: charEl.dataset.content || "",
+                            text: item.el.dataset.content || "",
                             chars: scrambleChars,
                             speed,
                         },
                         ease: "none",
                     });
                 }
-            });
+            }
         };
 
         const el = rootRef.current;
-        el.addEventListener("pointermove", handleMove);
+        el.addEventListener("pointermove", handleMove, { passive: true });
 
         return () => {
+            window.removeEventListener("resize", measureChars);
             el.removeEventListener("pointermove", handleMove);
             split.revert();
         };

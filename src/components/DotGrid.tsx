@@ -50,17 +50,76 @@ const DotGrid: React.FC<DotGridProps> = ({
     const wrapperRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const dotsRef = useRef<Dot[]>([]);
-    const pointerRef = useRef({ x: 0, y: 0 });
+    const rectRef = useRef({ left: 0, top: 0 });
+    const pointerRef = useRef({ x: -9999, y: -9999 });
+    const activeAnimCountRef = useRef(0);
+    const lastMoveTimeRef = useRef(0);
+    const rafIdRef = useRef(0);
 
     const baseRgb = useMemo(() => hexToRgb(baseColor), [baseColor]);
     const activeRgb = useMemo(() => hexToRgb(activeColor), [activeColor]);
+
+    const drawFrame = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const { x: px, y: py } = pointerRef.current;
+        const proximitySq = proximity * proximity;
+
+        for (const dot of dotsRef.current) {
+            const ox = dot.cx + dot.xOffset;
+            const oy = dot.cy + dot.yOffset;
+
+            const dx = dot.cx - px;
+            const dy = dot.cy - py;
+            const dsq = dx * dx + dy * dy;
+
+            let color = baseColor;
+
+            if (dsq <= proximitySq) {
+                const t = 1 - Math.sqrt(dsq) / proximity;
+                const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t);
+                const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t);
+                const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t);
+                color = `rgb(${r}, ${g}, ${b})`;
+            }
+
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.arc(ox, oy, dotSize / 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }, [proximity, dotSize, baseColor, baseRgb, activeRgb]);
+
+    const scheduleLoop = useCallback(() => {
+        if (rafIdRef.current) return;
+
+        const loop = () => {
+            drawFrame();
+            const isMoving = performance.now() - lastMoveTimeRef.current < 150;
+            if (isMoving || activeAnimCountRef.current > 0) {
+                rafIdRef.current = requestAnimationFrame(loop);
+            } else {
+                rafIdRef.current = 0;
+            }
+        };
+
+        rafIdRef.current = requestAnimationFrame(loop);
+    }, [drawFrame]);
 
     const buildGrid = useCallback(() => {
         const wrap = wrapperRef.current;
         const canvas = canvasRef.current;
         if (!wrap || !canvas) return;
 
-        const { width, height } = wrap.getBoundingClientRect();
+        const rect = wrap.getBoundingClientRect();
+        rectRef.current = { left: rect.left, top: rect.top };
+        const { width, height } = rect;
         const dpr = window.devicePixelRatio || 1;
 
         canvas.width = width * dpr;
@@ -99,7 +158,8 @@ const DotGrid: React.FC<DotGridProps> = ({
         }
 
         dotsRef.current = dots;
-    }, [dotSize, gap]);
+        drawFrame();
+    }, [dotSize, gap, drawFrame]);
 
     useEffect(() => {
         buildGrid();
@@ -113,69 +173,30 @@ const DotGrid: React.FC<DotGridProps> = ({
     }, [buildGrid]);
 
     useEffect(() => {
-        let rafId = 0;
-        const proximitySq = proximity * proximity;
-
-        const draw = () => {
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-
-            const ctx = canvas.getContext("2d");
-            if (!ctx) return;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const { x: px, y: py } = pointerRef.current;
-
-            for (const dot of dotsRef.current) {
-                const ox = dot.cx + dot.xOffset;
-                const oy = dot.cy + dot.yOffset;
-
-                const dx = dot.cx - px;
-                const dy = dot.cy - py;
-                const dsq = dx * dx + dy * dy;
-
-                let color = baseColor;
-
-                if (dsq <= proximitySq) {
-                    const t = 1 - Math.sqrt(dsq) / proximity;
-                    const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t);
-                    const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t);
-                    const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t);
-                    color = `rgb(${r}, ${g}, ${b})`;
-                }
-
-                ctx.beginPath();
-                ctx.fillStyle = color;
-                ctx.arc(ox, oy, dotSize / 2, 0, Math.PI * 2);
-                ctx.fill();
+        return () => {
+            if (rafIdRef.current) {
+                cancelAnimationFrame(rafIdRef.current);
             }
-
-            rafId = requestAnimationFrame(draw);
         };
-
-        draw();
-
-        return () => cancelAnimationFrame(rafId);
-    }, [proximity, dotSize, baseColor, baseRgb, activeRgb]);
+    }, []);
 
     useEffect(() => {
         const onMove = (e: MouseEvent) => {
-            const canvas = canvasRef.current;
-            if (!canvas) return;
+            pointerRef.current.x = e.clientX - rectRef.current.left;
+            pointerRef.current.y = e.clientY - rectRef.current.top;
+            lastMoveTimeRef.current = performance.now();
+            scheduleLoop();
+        };
 
-            const rect = canvas.getBoundingClientRect();
-            pointerRef.current.x = e.clientX - rect.left;
-            pointerRef.current.y = e.clientY - rect.top;
+        const onLeave = () => {
+            pointerRef.current.x = -9999;
+            pointerRef.current.y = -9999;
+            drawFrame();
         };
 
         const onClick = (e: MouseEvent) => {
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-
-            const rect = canvas.getBoundingClientRect();
-            const cx = e.clientX - rect.left;
-            const cy = e.clientY - rect.top;
+            const cx = e.clientX - rectRef.current.left;
+            const cy = e.clientY - rectRef.current.top;
 
             for (const dot of dotsRef.current) {
                 if (dot.animating) continue;
@@ -184,6 +205,7 @@ const DotGrid: React.FC<DotGridProps> = ({
                 if (dist > shockRadius) continue;
 
                 dot.animating = true;
+                activeAnimCountRef.current++;
 
                 const falloff = Math.max(0, 1 - dist / shockRadius);
                 const pushX = (dot.cx - cx) * shockStrength * falloff;
@@ -204,21 +226,25 @@ const DotGrid: React.FC<DotGridProps> = ({
                             ease: "elastic.out(1, 0.75)",
                             onComplete: () => {
                                 dot.animating = false;
+                                activeAnimCountRef.current = Math.max(0, activeAnimCountRef.current - 1);
                             },
                         });
                     },
                 });
             }
+            scheduleLoop();
         };
 
         window.addEventListener("mousemove", onMove, { passive: true });
+        window.addEventListener("mouseleave", onLeave);
         window.addEventListener("click", onClick);
 
         return () => {
             window.removeEventListener("mousemove", onMove);
+            window.removeEventListener("mouseleave", onLeave);
             window.removeEventListener("click", onClick);
         };
-    }, [shockRadius, shockStrength, resistance, returnDuration]);
+    }, [shockRadius, shockStrength, resistance, returnDuration, scheduleLoop, drawFrame]);
 
     return (
         <section className={`dot-grid ${className}`.trim()} style={style}>

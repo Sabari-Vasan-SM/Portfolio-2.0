@@ -7,7 +7,6 @@ import ProjectsSection from "@/components/ProjectsSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import CertificationsSection from "@/components/CertificationsSection";
 import TerminalSection from "@/components/TerminalSection";
-import Carousel3DPerspective from "@/components/SpecialElements/Carousels/tsx/Carousel3DPerspective";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
 import ChatBot from "@/components/ChatBot";
@@ -56,7 +55,6 @@ const Index = () => {
         <ExperienceSection />
         <CertificationsSection />
         <TerminalSection />
-        <Carousel3DPerspective />
         <ContactSection />
         <FooterSection />
         <ChatBot />

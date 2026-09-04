@@ -179,6 +179,7 @@ const SkillsSection = () => {
                 src={badge.src}
                 alt={badge.name}
                 loading="lazy"
+                decoding="async"
                 className="h-8 w-auto max-w-full object-contain"
                 referrerPolicy="no-referrer"
               />

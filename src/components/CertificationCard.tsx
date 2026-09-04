@@ -98,6 +98,8 @@ const CertificationCard: React.FC<CertificationCardProps> = ({ cert }) => {
                                         <img
                                             src={cert.image}
                                             alt={cert.title}
+                                            loading="lazy"
+                                            decoding="async"
                                             className="w-full h-auto object-cover max-h-96"
                                         />
                                     </div>

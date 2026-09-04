@@ -53,7 +53,7 @@ const projects = [
       "A comprehensive collection of beautiful, reusable Flutter widgets built for production-grade applications.",
     fullDescription:
       "vasX UI is an extensively crafted UI library for Flutter. Instead of rewriting common complex UI components like multi-step wizards, searchable dropdowns, and customizable tables, vasx_ui provides highly polished, fully customizable, and deeply integrated widgets that you can plug directly into your production apps. It follows modern design principles out of the box with fluid animations, adaptive layouts, and a cohesive color system.",
-    image: "/vasx_ui_banner.png",
+    image: "/vasx_ui_banner.webp",
     link: "https://pub.dev/packages/vasx_ui",
     github: "https://github.com/Sabari-Vasan-SM/vasX-UI.git",
     technologies: ["Flutter", "Dart", "Pub.dev", "UI Library", "Widgets"],
