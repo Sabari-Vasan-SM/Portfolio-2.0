@@ -27,6 +27,7 @@ export default defineConfig(() => ({
           "vendor-motion": ["framer-motion"],
           "vendor-gsap": ["gsap", "@gsap/react"],
           "vendor-icons": ["lucide-react", "@primer/octicons-react"],
+          "vendor-three": ["three"],
         },
       },
     },

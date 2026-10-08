@@ -3,6 +3,7 @@ import { Eye } from "lucide-react";
 import { useState, useEffect } from "react";
 import profileImage from "@/assets/profile.webp";
 import resumeFile from "@/assets/Sabarivasan_Resume.pdf";
+import Lanyard from "@/components/Lanyard";
 import LanyardCard from "@/components/LanyardCard";
 import ScrambledText from "@/components/ScrambledText";
 import TextType from "@/components/TextType";
@@ -140,17 +141,30 @@ const HeroSection = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="flex flex-col items-center justify-start gap-5 pt-2 md:items-center md:justify-start"
+            className="flex items-center justify-center w-full"
           >
-            <div className="h-72 w-72 md:h-96 md:w-96 overflow-hidden rounded-full border border-terminal-green/40 shadow-[0_0_35px_hsl(145_85%_60%_/_0.2)]">
-              <img
-                src={profileImage}
-                alt="SabariVasan"
-                width={384}
-                height={384}
-                fetchPriority="high"
-                decoding="async"
-                className="h-full w-full object-cover"
+            <div className="w-full h-[450px] sm:h-[500px] md:h-[600px]">
+              <Lanyard
+                frontImage={profileImage}
+                backImage={profileImage}
+                imageFit="cover"
+                imageOffsetY={0.07}
+                cardColor="#ffffff"
+                orientation="portrait"
+                finish="glossy"
+                cornerRadius={0.3}
+                size={0.6}
+                anchor="center"
+                strapLength={0.5}
+                strapColor="#111111"
+                strapWidth={0.65}
+                metal="silver"
+                gravity={1}
+                damping={0.5}
+                elasticity={0.5}
+                breeze={0.5}
+                interactive
+                intro
               />
             </div>
           </motion.div>
